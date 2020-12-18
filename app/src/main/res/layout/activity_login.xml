@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/signup_title"
-            android:textColor="@color/blackOlive"
+            android:textColor="@color/darkestGray"
             android:textSize="30sp"
             android:layout_marginLeft="@dimen/margin"
             app:layout_constraintBottom_toBottomOf="parent"

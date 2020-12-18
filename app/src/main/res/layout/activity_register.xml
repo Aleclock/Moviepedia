@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/login_title"
-            android:textColor="@color/blackOlive"
+            android:textColor="@color/darkGray"
             android:gravity="start"
             android:textSize="30sp"
             android:layout_marginLeft="@dimen/margin"

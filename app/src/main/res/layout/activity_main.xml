@@ -31,7 +31,7 @@
         android:id="@+id/readable_bottom_bar"
         app:rbb_tabs="@xml/bottom_bar_tabs"
         app:rbb_textColor="@color/white"
-        app:rbb_indicatorColor="@color/purple_200"
+        app:rbb_indicatorColor="@color/fireOpal"
         app:rbb_backgroundColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

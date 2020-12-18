@@ -6,8 +6,14 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="blackOlive">#403D39</color>
-    <color name="eerieBlack">#252422</color>
-    <color name="paleSilver">#FFFFFFFF</color> <!--CCC5B9-->
+    <color name="darkestGray">#313131</color>
+    <color name="darkGray">#414141</color>
+    <color name="gray">#525252</color>
+
+    <color name="paleSilver">#CCC5B9</color> <!--CCC5B9-->
+    <color name="fireOpal">#ec625f</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="darkSeaGreen">#79B791</color>
+    <color name="turquoiseGreen">#ABD1B5</color>
 </resources>

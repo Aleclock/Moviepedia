@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        drawable="@drawable/ic_baseline_movie_24"
+        drawable="@drawable/ic_clapperboard"
         text="@string/movie" />
 
     <tab
-        drawable="@drawable/ic_baseline_dashboard_24"
+        drawable="@drawable/ic_compass"
         text="@string/discover" />
 
     <tab
-        drawable="@drawable/ic_baseline_search_24"
+        drawable="@drawable/ic_loupe"
         text="@string/search" />
 
     <tab
-        drawable="@drawable/ic_baseline_person_24"
+        drawable="@drawable/ic_user"
         text="@string/profile" />
 </tabs>
