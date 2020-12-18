@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        drawable="@drawable/ic_baseline_movie_24"
+        text="@string/movie" />
+
+    <tab
+        drawable="@drawable/ic_baseline_dashboard_24"
+        text="@string/discover" />
+
+    <tab
+        drawable="@drawable/ic_baseline_search_24"
+        text="@string/search" />
+
+    <tab
+        drawable="@drawable/ic_baseline_person_24"
+        text="@string/profile" />
+</tabs>

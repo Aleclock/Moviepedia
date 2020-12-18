@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Moviepedia</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login_title">Sign in</string>
+    <string name="signup_title">Sign Up</string>
+    <string name="username">Username</string>
+
+    <!-- Bar tabs strings-->
+    <string name="discover">Discover</string>
+    <string name="search">Search</string>
+    <string name="movie">Movie</string>
+    <string name="profile">Profile</string>
+</resources>
