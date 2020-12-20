@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.et_email
 import kotlinx.android.synthetic.main.activity_login.et_password
 import kotlinx.android.synthetic.main.activity_login.signup_title
-import kotlinx.android.synthetic.main.activity_register.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -70,5 +69,17 @@ class LoginActivity : AppCompatActivity() {
         intent.putExtra("user_id", userID)
         startActivity(intent)
         finish()
+    }
+
+    companion object UserValue {
+        var mAuth = FirebaseAuth.getInstance()
+
+        fun signOut() {
+            mAuth?.signOut()
+        }
+
+        fun getEmail() : String {
+            return mAuth!!.currentUser!!.email!!
+        }
     }
 }

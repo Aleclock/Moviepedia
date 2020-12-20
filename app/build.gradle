@@ -17,6 +17,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // defining the google map key
+        buildConfigField "String", "TMDB_key", TMDB_key
     }
 
     buildTypes {
@@ -54,6 +57,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.github.iammert:ReadableBottomBar:0.2'
+
+    // Gson
+    // https://github.com/google/gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Retrofit
+    // https://github.com/square/retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.1.1')

@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".fragment.DiscoverFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMovies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/discover"
-        android:textColor="@color/white"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
