@@ -14,6 +14,4 @@ class MovieGridViewHolder(itemView: View): RecyclerView.ViewHolder (itemView) {
             .fitCenter()
             .into(itemView.imageViewMovie)
     }
-
-
 }

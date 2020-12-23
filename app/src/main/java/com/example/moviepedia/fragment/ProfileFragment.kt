@@ -12,14 +12,9 @@ import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.setting_bottom_sheet.*
+import kotlinx.android.synthetic.main.profile_stats.*
+import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
     private val TAG = "ProfileFragment"
 
@@ -40,10 +35,28 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUsername()
         initTitleBarButtons()
+        initToggleGroup()
+    }
+
+    private fun setUsername() {
+        LoginActivity.getUsername()
+        // TODO aggiungere cose
+    }
+
+    private fun initToggleGroup() {
+        toggle_group_profile.setOnSelectListener { button: ThemedButton ->
+           // TODO aggiungere cose
+        }
     }
 
     private fun initTitleBarButtons() {
+
+        btn_stats.setOnClickListener {
+            // TODO inviare a nuova activity (Stats)
+        }
+
         btn_setting.setOnClickListener {
             val dialog = context?.let { it1 -> BottomSheetDialog(it1) }
             val view = layoutInflater.inflate(R.layout.setting_bottom_sheet, null,false)
@@ -53,14 +66,17 @@ class ProfileFragment : Fragment() {
 
             dialog.findViewById<TextView>(R.id.textview_settings)!!.setOnClickListener {
                 Log.d(TAG, "Settings")
+                // TODO inviare a nuova activity (Settings)
             }
 
             dialog.findViewById<TextView>(R.id.textview_profile)!!.setOnClickListener {
                 Log.d(TAG, "Profile")
+                // TODO inviare a nuova activity (Profile)
             }
 
             dialog.findViewById<TextView>(R.id.textview_signout)!!.setOnClickListener {
                 LoginActivity.signOut()
+                dialog.dismiss()
                 val intent = Intent(activity, LoginActivity::class.java)
 
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

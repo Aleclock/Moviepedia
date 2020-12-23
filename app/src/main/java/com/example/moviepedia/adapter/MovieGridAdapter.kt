@@ -2,7 +2,6 @@ package com.example.moviepedia.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
@@ -11,6 +10,7 @@ import com.example.moviepedia.tmdb.Movie
 class MovieGridAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listOfMovies = listOf<Movie>()
+    private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MovieGridViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_grid_item,parent, false))
@@ -24,7 +24,8 @@ class MovieGridAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         (holder as MovieGridViewHolder).bindView(listOfMovies[position])
 
         holder.itemView.setOnClickListener{
-            Log.d("AAAA", listOfMovies[position].toString())
+            // TODO open new page
+            Log.d(TAG, listOfMovies[position].toString())
         }
     }
 

@@ -1,11 +1,14 @@
 package com.example.moviepedia
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.irozon.sneaker.Sneaker
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.et_email
 import kotlinx.android.synthetic.main.activity_login.et_password
@@ -55,6 +58,8 @@ class LoginActivity : AppCompatActivity() {
                             updateUI(FirebaseAuth.getInstance().currentUser!!.uid)
 
                         } else {
+                            Sneaker.with(this)
+                                .setTitle(R.string.error.toString(), R.color.fireOpal)
                             Log.e(TAG, "signInWithEmailAndPassword:failure", task.exception)
                         }
                     }
@@ -72,14 +77,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object UserValue {
-        var mAuth = FirebaseAuth.getInstance()
+        val mAuth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
 
         fun signOut() {
-            mAuth?.signOut()
+            mAuth.signOut()
         }
 
         fun getEmail() : String {
-            return mAuth!!.currentUser!!.email!!
+            return mAuth.currentUser!!.email!!
+        }
+
+        fun getUsername() : String {
+            // TODO trovare il modo di recupare le info dell'utente
+            db.collection("users")
+                .get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d("LoginActivity", "${document.id} => ${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("LoginActivity", "Error getting documents.", exception)
+                }
+            return ""
         }
     }
 }
