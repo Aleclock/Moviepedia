@@ -1,6 +1,5 @@
 package com.example.moviepedia
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,11 +7,13 @@ import android.text.TextUtils
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.irozon.sneaker.Sneaker
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.et_email
 import kotlinx.android.synthetic.main.activity_login.et_password
 import kotlinx.android.synthetic.main.activity_login.signup_title
+import retrofit2.http.Query
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,6 +22,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val dbSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()
+        db.firestoreSettings = dbSettings
 
         val mAuth = FirebaseAuth.getInstance()
         val user = mAuth.currentUser
@@ -77,8 +81,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object UserValue {
-        val mAuth = FirebaseAuth.getInstance()
-        val db = FirebaseFirestore.getInstance()
+        private val mAuth = FirebaseAuth.getInstance()
+        private val db = FirebaseFirestore.getInstance()
+        private val docRef = db.collection("users").document(mAuth.uid!!)
+        private val TAG = "UserValue"
 
         fun signOut() {
             mAuth.signOut()
@@ -88,19 +94,21 @@ class LoginActivity : AppCompatActivity() {
             return mAuth.currentUser!!.email!!
         }
 
-        fun getUsername() : String {
-            // TODO trovare il modo di recupare le info dell'utente
-            db.collection("users")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        Log.d("LoginActivity", "${document.id} => ${document.data}")
-                    }
+        fun getUserData (firestoreCallback: FirestoreCallback) {
+            // TODO non bellissimo, funziona ma devo aggiungere cose nel callback
+            docRef.get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    Log.d(TAG, "Cached document data: ${document?.data}")
+                    firestoreCallback.onCallback(document?.data!!)
+                } else {
+                    Log.d(TAG, "Cached get failed: ", task.exception)
                 }
-                .addOnFailureListener { exception ->
-                    Log.w("LoginActivity", "Error getting documents.", exception)
-                }
-            return ""
+            }
+        }
+
+        interface FirestoreCallback {
+            fun onCallback (@Query("list") list: MutableMap<String, Any>)
         }
     }
 }

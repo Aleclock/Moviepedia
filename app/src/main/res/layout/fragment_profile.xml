@@ -11,11 +11,24 @@
         android:id="@+id/cl_profile_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- TODO Aggiungere username utente -->
+        <TextView
+            android:id="@+id/tw_profile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:textSize="30sp"
+            android:layout_marginStart="@dimen/margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_setting"

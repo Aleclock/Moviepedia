@@ -41,7 +41,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setUsername() {
-        LoginActivity.getUsername()
+        LoginActivity.getUserData(object : LoginActivity.UserValue.FirestoreCallback {
+            override fun onCallback(list: MutableMap<String, Any>) {
+                tw_profile_username.text = list["username"].toString()
+            }
+        })
         // TODO aggiungere cose
     }
 
