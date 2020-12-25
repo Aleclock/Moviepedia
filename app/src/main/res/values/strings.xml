@@ -23,4 +23,12 @@
     <string name="insights">Insights</string>
     <string name="diary">Diary</string>
     <string name="rank">Rank</string>
+    <string name="popularMovies">Popular movies</string>
+    <string name="PopularTVshow">Popular TV shows</string>
+    <string name="popularLists">Popular lists</string>
+    <string name="movies">Movies</string>
+    <string name="tvshow">TV shows</string>
+    <string name="add_watchlist">Add to watchlist</string>
+    <string name="review_log">Review or log</string>
+    <string name="add_to_list">Add to list</string>
 </resources>

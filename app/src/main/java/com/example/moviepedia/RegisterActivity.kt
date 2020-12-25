@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.moviepedia.db.FirestoreUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_register.*
 
 
@@ -53,7 +53,9 @@ import kotlinx.android.synthetic.main.activity_register.*
                          if (task.isSuccessful) {
                              val userID: FirebaseUser = task.result!!.user!!
 
-                             saveUserToDB(userID, email, username)
+                             val firestoreUtils = FirestoreUtils()
+                             firestoreUtils.saveUserToDB(userID, email, username)
+                             firestoreUtils.createUserStats(userID)
 
                              Log.d(TAG, "createUserWithEmail:success")
 
@@ -70,20 +72,5 @@ import kotlinx.android.synthetic.main.activity_register.*
                      }
              }
          }
-     }
-
-     private fun saveUserToDB(userID: FirebaseUser, email: String, username: String) {
-         val db = FirebaseFirestore.getInstance()
-
-         val user: MutableMap<String, Any> = HashMap()
-         user["userID"] = userID.uid
-         user["email"] = email
-         user["username"] = username
-
-         // Add a new document with a generated ID
-         db.collection("users").document(userID.uid)
-             .set(user)
-             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
      }
 }

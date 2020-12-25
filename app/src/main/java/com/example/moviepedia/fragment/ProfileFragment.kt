@@ -10,6 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
+import com.example.moviepedia.activity.ProfileActivity
+import com.example.moviepedia.activity.SettingsActivity
+import com.example.moviepedia.activity.StatsActivity
+import com.example.moviepedia.db.FirestoreUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.profile_stats.*
@@ -20,8 +24,7 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
+        arguments?.let {}
     }
 
     override fun onCreateView(
@@ -36,17 +39,31 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUsername()
+        setUserStats()
         initTitleBarButtons()
         initToggleGroup()
     }
 
-    private fun setUsername() {
-        LoginActivity.getUserData(object : LoginActivity.UserValue.FirestoreCallback {
+    private fun setUserStats() {
+        val firestoreUtils = FirestoreUtils()
+        firestoreUtils.getUserStats(object : FirestoreUtils.FirestoreCallback {
             override fun onCallback(list: MutableMap<String, Any>) {
-                tw_profile_username.text = list["username"].toString()
+                if (tw_place_value != null)         tw_place_value.text = list["rank"].toString()
+                if (tw_watchlist_value != null)     tw_watchlist_value.text = list["watchlist"].toString()
+                if (tw_movie_value != null)         tw_movie_value.text = list["movies"].toString()
+                if (tw_series_value != null)        tw_series_value.text = list["tvshow"].toString()
             }
         })
-        // TODO aggiungere cose
+    }
+
+    private fun setUsername() {
+        val firestoreUtils = FirestoreUtils()
+        firestoreUtils.getUserData(object : FirestoreUtils.FirestoreCallback {
+            override fun onCallback(list: MutableMap<String, Any>) {
+                if (tw_profile_username != null)
+                    tw_profile_username.text = list["username"].toString()
+            }
+        })
     }
 
     private fun initToggleGroup() {
@@ -58,7 +75,9 @@ class ProfileFragment : Fragment() {
     private fun initTitleBarButtons() {
 
         btn_stats.setOnClickListener {
-            // TODO inviare a nuova activity (Stats)
+            val intent = Intent(context,
+                StatsActivity::class.java)
+            startActivity(intent)
         }
 
         btn_setting.setOnClickListener {
@@ -69,13 +88,15 @@ class ProfileFragment : Fragment() {
             dialog.show()
 
             dialog.findViewById<TextView>(R.id.textview_settings)!!.setOnClickListener {
-                Log.d(TAG, "Settings")
-                // TODO inviare a nuova activity (Settings)
+                val intent = Intent(context,
+                    SettingsActivity::class.java)
+                startActivity(intent)
             }
 
             dialog.findViewById<TextView>(R.id.textview_profile)!!.setOnClickListener {
-                Log.d(TAG, "Profile")
-                // TODO inviare a nuova activity (Profile)
+                val intent = Intent(context,
+                    ProfileActivity::class.java)
+                startActivity(intent)
             }
 
             dialog.findViewById<TextView>(R.id.textview_signout)!!.setOnClickListener {

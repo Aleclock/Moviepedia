@@ -9,15 +9,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviepedia.R
 import com.example.moviepedia.adapter.MovieGridAdapter
+import com.example.moviepedia.adapter.TVShowGridAdapter
 import com.example.moviepedia.tmdb.Movie
 import com.example.moviepedia.tmdb.MoviesRepository
+import com.example.moviepedia.tmdb.TVShow
 import kotlinx.android.synthetic.main.fragment_discover.*
+import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
 class DiscoverFragment : Fragment() {
 
     private val TAG = "DiscoverFragment"
 
     private lateinit var popularMoviesAdapter: MovieGridAdapter
+    private lateinit var popularTVShowAdapter: TVShowGridAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +38,23 @@ class DiscoverFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
+        initToggleGroup()
     }
 
     private fun onPopularMoviesFetched(movies: List<Movie>) {
-        Log.d(TAG, "Movies: $movies")
         popularMoviesAdapter.updateMovies(movies)
+    }
 
+    private fun onPopularTVShowsFetched(tvShows: List<TVShow>) {
+        popularTVShowAdapter.updateTVShows(tvShows)
     }
     private fun onError() {
         Log.d(TAG, "ERROREE")
     }
 
-    private fun initView() {
+    private fun initPopularMoviesView() {
         recyclerMovies.layoutManager = GridLayoutManager(context, 3)
-        popularMoviesAdapter = MovieGridAdapter()
+        popularMoviesAdapter = context?.let { MovieGridAdapter(it, layoutInflater) }!!
 
         recyclerMovies.adapter = popularMoviesAdapter
 
@@ -56,5 +62,37 @@ class DiscoverFragment : Fragment() {
             onSuccess = ::onPopularMoviesFetched,
             onError = ::onError
         )
+    }
+
+    private fun initPopularTVShowView() {
+        recyclerMovies.layoutManager = GridLayoutManager(context, 3)
+        popularTVShowAdapter = context?.let { TVShowGridAdapter(it) }!!
+
+        recyclerMovies.adapter = popularTVShowAdapter
+
+        MoviesRepository.getPopularTVShow(
+            onSuccess = ::onPopularTVShowsFetched,
+            onError = ::onError
+        )
+    }
+
+    private fun initToggleGroup() {
+        val allButtons = toggle_group_discover.buttons
+        toggle_group_discover.selectButton(allButtons[0].id)
+        initPopularMoviesView()
+
+        toggle_group_discover.setOnSelectListener { button: ThemedButton ->
+            when (button.id) {
+                R.id.toggle_btn_popularMovies -> {
+                    initPopularMoviesView()
+                }
+                R.id.toggle_btn_popularTVshow -> {
+                    initPopularTVShowView()
+                }
+                R.id.toggle_btn_popularlists -> {
+                    Log.d(TAG, "Popular lists")
+                }
+            }
+        }
     }
 }

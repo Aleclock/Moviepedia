@@ -1,13 +1,18 @@
 package com.example.moviepedia.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
+import com.example.moviepedia.activity.MovieActivity
+import com.example.moviepedia.dialog.MovieBottomSheet
 import com.example.moviepedia.tmdb.Movie
 
-class MovieGridAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MovieGridAdapter(val context: Context, val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listOfMovies = listOf<Movie>()
     private val TAG = "MovieGridAdapter"
@@ -24,8 +29,17 @@ class MovieGridAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         (holder as MovieGridViewHolder).bindView(listOfMovies[position])
 
         holder.itemView.setOnClickListener{
-            // TODO open new page
+            val intent = Intent(context, MovieActivity::class.java)
+            ContextCompat.startActivity(context, intent, null)
             Log.d(TAG, listOfMovies[position].toString())
+        }
+
+        holder.itemView.setOnLongClickListener {
+
+            MovieBottomSheet().createDialog(context, listOfMovies[position], layoutInflater)
+
+            Log.d(TAG, "long click $listOfMovies[position].toString()")
+            true
         }
     }
 

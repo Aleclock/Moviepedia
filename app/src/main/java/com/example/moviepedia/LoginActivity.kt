@@ -83,7 +83,6 @@ class LoginActivity : AppCompatActivity() {
     companion object UserValue {
         private val mAuth = FirebaseAuth.getInstance()
         private val db = FirebaseFirestore.getInstance()
-        private val docRef = db.collection("users").document(mAuth.uid!!)
         private val TAG = "UserValue"
 
         fun signOut() {
@@ -94,21 +93,8 @@ class LoginActivity : AppCompatActivity() {
             return mAuth.currentUser!!.email!!
         }
 
-        fun getUserData (firestoreCallback: FirestoreCallback) {
-            // TODO non bellissimo, funziona ma devo aggiungere cose nel callback
-            docRef.get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val document = task.result
-                    Log.d(TAG, "Cached document data: ${document?.data}")
-                    firestoreCallback.onCallback(document?.data!!)
-                } else {
-                    Log.d(TAG, "Cached get failed: ", task.exception)
-                }
-            }
-        }
-
-        interface FirestoreCallback {
-            fun onCallback (@Query("list") list: MutableMap<String, Any>)
+        fun getUID() : String {
+            return mAuth.currentUser!!.uid
         }
     }
 }

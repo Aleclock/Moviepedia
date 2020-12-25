@@ -27,7 +27,6 @@
             android:id="@+id/tw_place_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="155th "
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white"
             android:gravity="center"
@@ -62,7 +61,6 @@
             android:id="@+id/tw_watchlist_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="32"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white"
             android:gravity="center"
@@ -95,10 +93,9 @@
         android:layout_marginStart="@dimen/margin">
 
         <TextView
-            android:id="@+id/tw_films_value"
+            android:id="@+id/tw_movie_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="324"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white"
             android:gravity="center"
@@ -107,17 +104,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tw_films_title"
+            android:id="@+id/tw_movie_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rank"
+            android:text="@string/movies"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/darkestGray"
             android:textStyle="bold"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tw_films_value" />
+            app:layout_constraintTop_toBottomOf="@+id/tw_movie_value" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -135,7 +132,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="44"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/rank"
+            android:text="@string/tvshow"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/darkestGray"
             android:textStyle="bold"

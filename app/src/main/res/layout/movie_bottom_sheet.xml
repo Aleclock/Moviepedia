@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:padding="@dimen/margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_movie_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+        android:id="@+id/tw_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:gravity="start"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_big"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tw_movie_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="@color/white"
+        android:gravity="end"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tw_movie_resease_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:gravity="start"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tw_movie_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_movie_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@+id/cl_movie_info"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+            android:id="@+id/toggle_group_movie_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:justifyContent="center">
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:toggle_textSize="@dimen/text_size_small"
+            app:toggle_text="@string/add_watchlist"
+            app:toggle_textColor="@color/white"
+            app:toggle_backgroundColor="@color/black"
+            app:toggle_borderWidth = "2dp"
+            app:toggle_selectedBorderWidth = "2dp"
+            app:toggle_borderColor="@color/white"
+            app:toggle_selectedBorderColor = "@color/fireOpal"
+            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:toggle_textSize="@dimen/text_size_small"
+            app:toggle_text="@string/watched"
+            app:toggle_textColor="@color/white"
+            app:toggle_backgroundColor="@color/black"
+            app:toggle_borderWidth = "2dp"
+            app:toggle_selectedBorderWidth = "2dp"
+            app:toggle_borderColor="@color/white"
+            app:toggle_selectedBorderColor = "@color/fireOpal"
+            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+
+        <com.jaygoo.widget.RangeSeekBar
+            android:id="@+id/range_seekbar"
+            app:rsb_mode = "single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            app:rsb_gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/toggle_group_movie_sheet"
+            app:layout_constraintStart_toStartOf="parent"
+            app:rsb_steps="10"
+            app:rsb_step_radius="@dimen/margin"
+            app:rsb_step_color="@color/fireOpal"
+            app:rsb_step_height="1dp"
+            app:rsb_step_width="1dp"
+            app:rsb_step_auto_bonding="true"
+            app:rsb_tick_mark_mode="other"
+            app:rsb_tick_mark_text_array="@array/seekbarArray"
+            app:rsb_tick_mark_gravity = "center"
+            app:rsb_tick_mark_layout_gravity="bottom"
+            app:rsb_tick_mark_text_color="@color/gray"
+            app:rsb_tick_mark_text_size="@dimen/text_size_small"
+            app:rsb_tick_mark_text_margin="@dimen/margin"
+            app:rsb_progress_color="@color/fireOpal"
+            app:rsb_progress_height="5dp"
+            app:rsb_indicator_text_color="@color/gray"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin32"
+        android:layout_marginBottom="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@+id/cl_movie_toggle"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tw_review_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:gravity="start"
+            android:text="@string/review_log"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tw_add_to_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:gravity="start"
+            android:text="@string/add_to_list"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tw_review_log" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

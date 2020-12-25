@@ -1,13 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.DiscoverFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cl_discover_toggle"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+            android:id="@+id/toggle_group_discover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                android:id="@+id/toggle_btn_popularMovies"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                app:toggle_textSize="@dimen/text_size_small"
+                app:toggle_text="@string/movies"
+                app:toggle_textColor="@color/white"
+                app:toggle_backgroundColor="@color/black"
+                app:toggle_borderWidth = "2dp"
+                app:toggle_selectedBorderWidth = "2dp"
+                app:toggle_borderColor="@color/white"
+                app:toggle_selectedBorderColor = "@color/fireOpal"
+                app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                android:id="@+id/toggle_btn_popularTVshow"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                app:toggle_textSize="@dimen/text_size_small"
+                app:toggle_text="@string/tvshow"
+                app:toggle_textColor="@color/white"
+                app:toggle_backgroundColor="@color/black"
+                app:toggle_borderWidth = "2dp"
+                app:toggle_selectedBorderWidth = "2dp"
+                app:toggle_borderColor="@color/white"
+                app:toggle_selectedBorderColor = "@color/fireOpal"
+                app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                android:id="@+id/toggle_btn_popularlists"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                app:toggle_textSize="@dimen/text_size_small"
+                app:toggle_text="@string/list"
+                app:toggle_textColor="@color/white"
+                app:toggle_backgroundColor="@color/black"
+                app:toggle_borderWidth = "2dp"
+                app:toggle_selectedBorderWidth = "2dp"
+                app:toggle_borderColor="@color/white"
+                app:toggle_selectedBorderColor = "@color/fireOpal"
+                app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMovies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@id/cl_discover_toggle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

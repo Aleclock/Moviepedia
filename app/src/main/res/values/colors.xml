@@ -16,4 +16,7 @@
 
     <color name="darkSeaGreen">#79B791</color>
     <color name="turquoiseGreen">#ABD1B5</color>
+
+    <color name="roundedBottomSheetPrimaryBackground">@color/black</color>
+
 </resources>
