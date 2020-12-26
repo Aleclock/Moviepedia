@@ -15,12 +15,10 @@ import com.example.moviepedia.activity.ProfileActivity
 import com.example.moviepedia.activity.SettingsActivity
 import com.example.moviepedia.activity.StatsActivity
 import com.example.moviepedia.adapter.FirestoreItemGridAdapter
-import com.example.moviepedia.adapter.MovieGridAdapter
 import com.example.moviepedia.db.FirestoreUtils
 import com.example.moviepedia.model.WatchedItem
 import com.example.moviepedia.model.WatchlistItem
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.profile_stats.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
@@ -53,7 +51,7 @@ class ProfileFragment : Fragment() {
     private fun setUserStats() {
         val firestoreUtils = FirestoreUtils()
         firestoreUtils.getUserStats(object : FirestoreUtils.FirestoreCallback {
-            override fun onCallback(list: MutableMap<String, Any>) {
+            override fun onCallback(list: MutableMap<String, Any?>) {
                 if (tw_place_value != null)         tw_place_value.text = list["rank"].toString()
                 if (tw_watchlist_value != null)     tw_watchlist_value.text = list["watchlist"].toString()
                 if (tw_movie_value != null)         tw_movie_value.text = list["movies"].toString()
@@ -64,7 +62,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUsername() {
         FirestoreUtils().getUserData(object : FirestoreUtils.FirestoreCallback {
-            override fun onCallback(list: MutableMap<String, Any>) {
+            override fun onCallback(list: MutableMap<String, Any?>) {
                 if (tw_profile_username != null)
                     tw_profile_username.text = list["username"].toString()
             }

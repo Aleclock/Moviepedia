@@ -66,6 +66,13 @@ open class FirestoreUtils {
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
+    fun removeMovieToWatchlist(userID: FirebaseUser, movie: Movie) {
+        db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
     fun addMovieToWatched(userID: FirebaseUser, movie: Movie) {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
         val watchedItem = WatchedItem(movie.id,"movie", null, null, Timestamp(Date()),firestoreItem,null)
@@ -74,6 +81,13 @@ open class FirestoreUtils {
                 .set(watchedItem)
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
+    fun removeMovieToWatched(userID: FirebaseUser, movie: Movie) {
+        db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
     fun updateUserStats(key: String) {
@@ -137,7 +151,6 @@ open class FirestoreUtils {
                 .addOnSuccessListener { documents ->
                     val itemList =  mutableListOf<WatchlistItem>()
                     for (doc in documents) {
-                        Log.d(TAG, doc.data["item"].toString())
                         itemList.add(doc.toObject(WatchlistItem::class.java))
                     }
                     firestoreWatchlistItemsCallback.onCallback(itemList)
@@ -162,8 +175,65 @@ open class FirestoreUtils {
             }
     }
 
+    fun isInWatchlist(userID: FirebaseUser, movie: Movie, firestorePresenceCallback: FirestorePresenceCallback){
+        val item: MutableMap<String, Any?> = HashMap()
+
+        db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
+            .get()
+            .addOnSuccessListener { document ->
+                val watchedItem = document.toObject(WatchlistItem::class.java)
+                if (document.data != null) {
+                    item["presence"] = true
+                    item["item"] = watchedItem
+                } else {
+                    item["presence"] = false
+                    item["item"] = null
+                }
+                firestorePresenceCallback.onCallback(item)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+                item["presence"] = false
+                item["item"] = null
+                firestorePresenceCallback.onCallback(item)
+            }
+    }
+
+    fun isInWatched(userID: FirebaseUser, movie: Movie, firestorePresenceCallback: FirestorePresenceCallback){
+        val item: MutableMap<String, Any?> = HashMap()
+
+        db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
+            .get()
+            .addOnSuccessListener { document ->
+                val watchedItem = document.toObject(WatchedItem::class.java)
+                if (document.data != null) {
+                    item["presence"] = true
+                    item["item"] = watchedItem
+                } else {
+                    item["presence"] = false
+                    item["item"] = null
+                }
+                firestorePresenceCallback.onCallback(item)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+                item["presence"] = false
+                item["item"] = null
+                firestorePresenceCallback.onCallback(item)
+            }
+    }
+
+
+    /**
+     * INTERFACE FOR CALLBACKS
+     */
+
     interface FirestoreCallback {
-        fun onCallback (@Query("list") list: MutableMap<String, Any>)
+        fun onCallback (@Query("list") list: MutableMap<String, Any?>)
+    }
+
+    interface FirestorePresenceCallback {
+        fun onCallback (@Query("value") value: MutableMap<String, Any?>)
     }
 
     interface FirestoreWatchlistItemsCallback {

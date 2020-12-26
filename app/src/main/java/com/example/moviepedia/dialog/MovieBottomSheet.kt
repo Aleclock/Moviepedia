@@ -11,6 +11,7 @@ import com.example.moviepedia.db.FirestoreUtils
 import com.example.moviepedia.model.Movie
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
+import kotlinx.android.synthetic.main.profile_stats.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
 
@@ -28,23 +29,53 @@ open class MovieBottomSheet {
         manageSeekbar(mBottomSheetDialog)
     }
 
+    private fun checkInFirestore(toggle: ThemedToggleButtonGroup, movie: Movie) {
+        val firestoreUtils = FirestoreUtils()
+
+        firestoreUtils.isInWatchlist(LoginActivity.getUser(), movie, object : FirestoreUtils.FirestorePresenceCallback {
+            override fun onCallback(value: MutableMap<String, Any?>) {
+                if (value["presence"] as Boolean)
+                    toggle.selectButtonWithAnimation(R.id.toggle_sheet_btn_movie_watchlist)
+            }
+        })
+
+        firestoreUtils.isInWatched(LoginActivity.getUser(), movie, object : FirestoreUtils.FirestorePresenceCallback {
+            override fun onCallback(value: MutableMap<String, Any?>) {
+                if (value["presence"] as Boolean)
+                    toggle.selectButtonWithAnimation(R.id.toggle_sheet_btn_movie_watched)
+            }
+
+        })
+    }
+
     private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
         val toggle = mBottomSheetDialog.findViewById<ThemedToggleButtonGroup>(R.id.toggle_group_movie_sheet)
         toggle?.setOnSelectListener { button: ThemedButton ->
-
             val firestoreUtils = FirestoreUtils()
 
             when (button.id) {
                 R.id.toggle_sheet_btn_movie_watchlist -> {
-                    firestoreUtils.addMovieToWatchlist(LoginActivity.getUser(), movie)
-                    firestoreUtils.updateUserStats("watchlist")
+                    if (button.isSelected) {
+                        firestoreUtils.addMovieToWatchlist(LoginActivity.getUser(), movie)
+                        firestoreUtils.updateUserStats("watchlist")
+                    } else {
+                        firestoreUtils.removeMovieToWatchlist(LoginActivity.getUser(), movie)
+                        firestoreUtils.updateUserStats("watchlist")
+                    }
                 }
                 R.id.toggle_sheet_btn_movie_watched -> {
-                    firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie)
-                    firestoreUtils.updateUserStats("movies")
+                    if (button.isSelected) {
+                        firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie)
+                        firestoreUtils.updateUserStats("movies")
+                    } else {
+                        firestoreUtils.removeMovieToWatched(LoginActivity.getUser(), movie)
+                        firestoreUtils.updateUserStats("watchlist")
+                    }
                 }
             }
         }
+
+        checkInFirestore(toggle!!, movie)
     }
 
     private fun manageSeekbar(mBottomSheetDialog: RoundedBottomSheetDialog) {
