@@ -1,5 +1,7 @@
 package com.example.moviepedia.tmdb
 
+import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.TVShow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,9 +20,9 @@ object MoviesRepository {
         api = retrofit.create(Api::class.java) }
 
     fun getPopularMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<Movie>) -> Unit,
-        onError: () -> Unit
+            page: Int = 1,
+            onSuccess: (movies: List<Movie>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getPopularMovies(page = page)
             .enqueue(object : Callback<GetMoviesResponse> {
@@ -49,9 +51,9 @@ object MoviesRepository {
 
 
     fun getTopRatedMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<Movie>) -> Unit,
-        onError: () -> Unit
+            page: Int = 1,
+            onSuccess: (movies: List<Movie>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getTopRatedMovies(page = page)
             .enqueue(object : Callback<GetMoviesResponse> {
@@ -79,9 +81,9 @@ object MoviesRepository {
     }
 
     fun getUpcomingMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<Movie>) -> Unit,
-        onError: () -> Unit
+            page: Int = 1,
+            onSuccess: (movies: List<Movie>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getUpcomingMovies(page = page)
             .enqueue(object : Callback<GetMoviesResponse> {
@@ -109,8 +111,8 @@ object MoviesRepository {
     }
 
     fun getLatestMovies(
-        onSuccess: (movies: List<Movie>) -> Unit,
-        onError: () -> Unit
+            onSuccess: (movies: List<Movie>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getLatestMovies()
             .enqueue(object : Callback<GetMoviesResponse> {
@@ -142,9 +144,9 @@ object MoviesRepository {
      */
 
     fun getPopularTVShow(
-        page: Int = 1,
-        onSuccess: (shows: List<TVShow>) -> Unit,
-        onError: () -> Unit
+            page: Int = 1,
+            onSuccess: (shows: List<TVShow>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getPopularTVShow(page = page)
             .enqueue(object : Callback<GetTVShowResponse> {
@@ -172,9 +174,9 @@ object MoviesRepository {
     }
 
     fun getTopRatedTVShow(
-        page: Int = 1,
-        onSuccess: (shows: List<TVShow>) -> Unit,
-        onError: () -> Unit
+            page: Int = 1,
+            onSuccess: (shows: List<TVShow>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getTopRatedTVShow(page = page)
             .enqueue(object : Callback<GetTVShowResponse> {
@@ -202,8 +204,8 @@ object MoviesRepository {
     }
 
     fun getLatestTVShow(
-        onSuccess: (shows: List<TVShow>) -> Unit,
-        onError: () -> Unit
+            onSuccess: (shows: List<TVShow>) -> Unit,
+            onError: () -> Unit
     ) {
         api.getLatestTVShow()
             .enqueue(object : Callback<GetTVShowResponse> {

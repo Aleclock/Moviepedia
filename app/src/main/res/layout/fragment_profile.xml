@@ -67,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                android:id="@+id/btn1"
+                android:id="@+id/toggle_profile_btn_watchlist"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:toggle_textSize="@dimen/text_size_small"
@@ -81,7 +81,7 @@
                 app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
 
             <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                android:id="@+id/btn2"
+                android:id="@+id/toggle_profile_btn_watched"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:toggle_textSize="@dimen/text_size_small"
@@ -95,7 +95,7 @@
                 app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
 
             <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                android:id="@+id/btn4"
+                android:id="@+id/toggle_profile_btn_diary"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:toggle_textSize="@dimen/text_size_small"
@@ -109,7 +109,7 @@
                 app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
 
             <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                android:id="@+id/btn3"
+                android:id="@+id/toggle_profile_btn_list"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 app:toggle_textSize="@dimen/text_size_small"
@@ -125,5 +125,14 @@
         </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_profile"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@id/cl_profile_toggle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

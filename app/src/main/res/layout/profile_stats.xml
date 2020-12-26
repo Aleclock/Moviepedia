@@ -6,12 +6,20 @@
     android:id="@+id/cl_profile_stats"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin"
-    android:layout_marginTop="@dimen/margin"
-    android:layout_marginBottom="@dimen/margin"
-    android:background="@color/black"
+    android:layout_margin="@dimen/margin"
+    android:background="@drawable/custom_stroke_layout"
     app:layout_constraintTop_toTopOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin5"
+        android:layout_marginBottom="@dimen/margin5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_profile_stats_place"
@@ -152,15 +160,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tw_series_value" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@null"
         android:padding="10dp"
         android:src="@drawable/ic_right_arrow"
-        app:layout_constraintStart_toEndOf="@+id/cl_profile_stats_series"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

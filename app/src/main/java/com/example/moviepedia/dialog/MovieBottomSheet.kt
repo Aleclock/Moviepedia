@@ -8,7 +8,7 @@ import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.example.moviepedia.db.FirestoreUtils
-import com.example.moviepedia.tmdb.Movie
+import com.example.moviepedia.model.Movie
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton

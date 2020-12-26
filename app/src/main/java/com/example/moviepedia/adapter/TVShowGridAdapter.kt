@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
-import androidx.fragment.app.Fragment
 import com.example.moviepedia.activity.TVShowActivity
-import com.example.moviepedia.tmdb.TVShow
+import com.example.moviepedia.model.TVShow
 
 class TVShowGridAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

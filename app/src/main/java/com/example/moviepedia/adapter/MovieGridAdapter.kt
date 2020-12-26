@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.dialog.MovieBottomSheet
-import com.example.moviepedia.tmdb.Movie
+import com.example.moviepedia.model.Movie
 
 class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

@@ -2,18 +2,25 @@ package com.example.moviepedia.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.ProfileActivity
 import com.example.moviepedia.activity.SettingsActivity
 import com.example.moviepedia.activity.StatsActivity
+import com.example.moviepedia.adapter.FirestoreItemGridAdapter
+import com.example.moviepedia.adapter.MovieGridAdapter
 import com.example.moviepedia.db.FirestoreUtils
+import com.example.moviepedia.model.WatchedItem
+import com.example.moviepedia.model.WatchlistItem
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.profile_stats.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
@@ -45,7 +52,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUserStats() {
         val firestoreUtils = FirestoreUtils()
-        firestoreUtils.getUserStats(object : FirestoreUtils.FirestoneCallback {
+        firestoreUtils.getUserStats(object : FirestoreUtils.FirestoreCallback {
             override fun onCallback(list: MutableMap<String, Any>) {
                 if (tw_place_value != null)         tw_place_value.text = list["rank"].toString()
                 if (tw_watchlist_value != null)     tw_watchlist_value.text = list["watchlist"].toString()
@@ -56,8 +63,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setUsername() {
-        val firestoreUtils = FirestoreUtils()
-        firestoreUtils.getUserData(object : FirestoreUtils.FirestoneCallback {
+        FirestoreUtils().getUserData(object : FirestoreUtils.FirestoreCallback {
             override fun onCallback(list: MutableMap<String, Any>) {
                 if (tw_profile_username != null)
                     tw_profile_username.text = list["username"].toString()
@@ -66,9 +72,53 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initToggleGroup() {
+        val allButtons = toggle_group_profile.buttons
+        toggle_group_profile.selectButton(allButtons[0].id)
+        initWachlistView()
+
         toggle_group_profile.setOnSelectListener { button: ThemedButton ->
-           // TODO aggiungere cose
+            when (button.id) {
+                R.id.toggle_profile_btn_watchlist -> {
+                    initWachlistView()
+                }
+                R.id.toggle_profile_btn_watched -> {
+                    initWatchedView()
+                }
+                R.id.toggle_profile_btn_diary -> {
+                    Log.d(TAG, "Diary")
+                }
+                R.id.toggle_profile_btn_list -> {
+                    Log.d(TAG, "Lists")
+                }
+            }
         }
+    }
+
+    private fun initWachlistView() {
+        recycler_profile.layoutManager = GridLayoutManager(context, 3)
+        val itemAdapter = context?.let { FirestoreItemGridAdapter(it, layoutInflater) }!!
+        recycler_profile.adapter = itemAdapter
+
+        FirestoreUtils().getWatchlistItems(object : FirestoreUtils.FirestoreWatchlistItemsCallback {
+            override fun onCallback(list: MutableList<WatchlistItem>) {
+                val items = list.map {it.item!!}
+                itemAdapter.updateItems(items)
+            }
+        })
+    }
+
+    private fun initWatchedView() {
+        recycler_profile.layoutManager = GridLayoutManager(context, 3)
+        val itemAdapter = context?.let { FirestoreItemGridAdapter(it, layoutInflater) }!!
+        recycler_profile.adapter = itemAdapter
+
+        FirestoreUtils().getWatchedItems(object : FirestoreUtils.FirestoreWatchedItemsCallback {
+            override fun onCallabck(list: MutableList<WatchedItem>) {
+                val items = list.map {it.item!!}
+                itemAdapter.updateItems(items)
+            }
+
+        })
     }
 
     private fun initTitleBarButtons() {

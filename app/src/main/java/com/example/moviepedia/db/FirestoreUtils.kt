@@ -2,7 +2,10 @@ package com.example.moviepedia.db
 
 import android.util.Log
 import com.example.moviepedia.LoginActivity
-import com.example.moviepedia.tmdb.Movie
+import com.example.moviepedia.model.FirestoreItem
+import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.WatchedItem
+import com.example.moviepedia.model.WatchlistItem
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
@@ -17,7 +20,9 @@ open class FirestoreUtils {
     private val db = FirebaseFirestore.getInstance()
 
     /**
+     * ------------------------------------------------------------
      * CREATE VALUE ON FIRESTORE
+     * ------------------------------------------------------------
      */
 
     fun saveUserToDB(userID: FirebaseUser, email: String, username: String) {
@@ -46,15 +51,14 @@ open class FirestoreUtils {
     }
 
     /**
+     * ------------------------------------------------------------
      * SAVE OR UPDATE VALUE ON FIRESTORE
+     * ------------------------------------------------------------
      */
 
     fun addMovieToWatchlist(userID: FirebaseUser, movie: Movie) {
-        val watchlistItem: MutableMap<String, Any> = HashMap()
-        watchlistItem["movieID"] = movie.id
-        watchlistItem["addDate"] = Timestamp(Date())
-        watchlistItem["movie"] = movie
-        watchlistItem["type"] = "movie"
+        val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
+        val watchlistItem = WatchlistItem(movie.id, "movie", Timestamp(Date()),firestoreItem)
 
         db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
                 .set(watchlistItem)
@@ -63,14 +67,8 @@ open class FirestoreUtils {
     }
 
     fun addMovieToWatched(userID: FirebaseUser, movie: Movie) {
-        val watchedItem: MutableMap<String, Any?> = HashMap()
-        watchedItem["movieID"] = movie.id
-        watchedItem["addDate"] = Timestamp(Date())
-        watchedItem["rating"] = null
-        watchedItem["review"] = null
-        watchedItem["watchedDate"] = null
-        watchedItem["movie"] = movie
-        watchedItem["type"] = "movie"
+        val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
+        val watchedItem = WatchedItem(movie.id,"movie", null, null, Timestamp(Date()),firestoreItem,null)
 
         db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
                 .set(watchedItem)
@@ -82,16 +80,16 @@ open class FirestoreUtils {
         when (key) {
             "watchlist" -> {
                 val docRef = db.collection("stats").document(LoginActivity.getUID())
-                getWatchlistItems(object : FirestoreItemsCallback {
-                    override fun onCallback(list: MutableList<DocumentSnapshot>) {
+                getWatchlistItems(object : FirestoreWatchlistItemsCallback {
+                    override fun onCallback(list: MutableList<WatchlistItem>) {
                         docRef.update(key, list.size)
                     }
                 })
             }
             "movies" -> {
                 val docRef = db.collection("stats").document(LoginActivity.getUID())
-                getWatchedItems(object : FirestoreItemsCallback {
-                    override fun onCallback(list: MutableList<DocumentSnapshot>) {
+                getWatchedItems(object : FirestoreWatchedItemsCallback {
+                    override fun onCallabck(list: MutableList<WatchedItem>) {
                         docRef.update(key, list.size)
                     }
                 })
@@ -102,7 +100,9 @@ open class FirestoreUtils {
     }
 
     /**
+     * ------------------------------------------------------------
      * RETRIEVE DATA FROM FIRESTORE
+     * ------------------------------------------------------------
      */
 
     fun getUserData (firestoreCallback: FirestoreCallback) {
@@ -112,7 +112,6 @@ open class FirestoreUtils {
         docRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val document = task.result
-                Log.d(TAG, "Cached document data: ${document?.data}")
                 firestoreCallback.onCallback(document?.data!!)
             } else {
                 Log.d(TAG, "Cached get failed: ", task.exception)
@@ -132,32 +131,47 @@ open class FirestoreUtils {
         }
     }
 
-    fun getWatchlistItems(firestoreItemsCallback: FirestoreItemsCallback) {
+    fun getWatchlistItems(firestoreWatchlistItemsCallback: FirestoreWatchlistItemsCallback) {
         val docRef = db.collection("movies").document(LoginActivity.getUID()).collection("watchlist")
-        docRef.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val document = task.result
-                firestoreItemsCallback.onCallback(document?.documents!!)
-            } else {
-                Log.d(TAG, "Cached get failed: ", task.exception)
-            }
-        }
+        docRef.get()
+                .addOnSuccessListener { documents ->
+                    val itemList =  mutableListOf<WatchlistItem>()
+                    for (doc in documents) {
+                        Log.d(TAG, doc.data["item"].toString())
+                        itemList.add(doc.toObject(WatchlistItem::class.java))
+                    }
+                    firestoreWatchlistItemsCallback.onCallback(itemList)
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                }
     }
 
-    fun getWatchedItems(firestoreItemsCallback: FirestoreItemsCallback) {
+    fun getWatchedItems(firestoreWatchedItemsCallback: FirestoreWatchedItemsCallback) {
         val docRef = db.collection("movies").document(LoginActivity.getUID()).collection("watched")
-        docRef.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val document = task.result
-                firestoreItemsCallback.onCallback(document?.documents!!)
-            } else {
-                Log.d(TAG, "Cached get failed: ", task.exception)
+        docRef.get()
+            .addOnSuccessListener { documents ->
+                val itemList =  mutableListOf<WatchedItem>()
+                for (doc in documents) {
+                    itemList.add(doc.toObject(WatchedItem::class.java))
+                }
+                firestoreWatchedItemsCallback.onCallabck(itemList)
             }
-        }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 
     interface FirestoreCallback {
         fun onCallback (@Query("list") list: MutableMap<String, Any>)
+    }
+
+    interface FirestoreWatchlistItemsCallback {
+        fun onCallback (@Query("list") list: MutableList<WatchlistItem>)
+    }
+
+    interface FirestoreWatchedItemsCallback {
+        fun onCallabck (@Query("list") list: MutableList<WatchedItem>)
     }
 
     interface FirestoreItemsCallback {

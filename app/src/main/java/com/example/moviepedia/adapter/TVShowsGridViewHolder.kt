@@ -3,8 +3,7 @@ package com.example.moviepedia.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moviepedia.tmdb.Movie
-import com.example.moviepedia.tmdb.TVShow
+import com.example.moviepedia.model.TVShow
 import kotlinx.android.synthetic.main.list_grid_item.view.*
 
 class TVShowsGridViewHolder(itemView: View): RecyclerView.ViewHolder (itemView) {

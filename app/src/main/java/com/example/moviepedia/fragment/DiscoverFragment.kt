@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviepedia.R
 import com.example.moviepedia.adapter.MovieGridAdapter
 import com.example.moviepedia.adapter.TVShowGridAdapter
-import com.example.moviepedia.tmdb.Movie
+import com.example.moviepedia.model.Movie
 import com.example.moviepedia.tmdb.MoviesRepository
-import com.example.moviepedia.tmdb.TVShow
+import com.example.moviepedia.model.TVShow
 import kotlinx.android.synthetic.main.fragment_discover.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
