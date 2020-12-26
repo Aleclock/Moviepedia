@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TextView
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
+import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
+import com.example.moviepedia.db.FirestoreUtils
 import com.example.moviepedia.tmdb.Movie
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
@@ -22,14 +24,26 @@ open class MovieBottomSheet {
         mBottomSheetDialog.show()
 
         setMovieInfo(mBottomSheetDialog, movie)
-        manageToggle(mBottomSheetDialog)
+        manageToggle(mBottomSheetDialog, movie)
         manageSeekbar(mBottomSheetDialog)
     }
 
-    private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog) {
+    private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
         val toggle = mBottomSheetDialog.findViewById<ThemedToggleButtonGroup>(R.id.toggle_group_movie_sheet)
         toggle?.setOnSelectListener { button: ThemedButton ->
-            // TODO add controls
+
+            val firestoreUtils = FirestoreUtils()
+
+            when (button.id) {
+                R.id.toggle_sheet_btn_movie_watchlist -> {
+                    firestoreUtils.addMovieToWatchlist(LoginActivity.getUser(), movie)
+                    firestoreUtils.updateUserStats("watchlist")
+                }
+                R.id.toggle_sheet_btn_movie_watched -> {
+                    firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie)
+                    firestoreUtils.updateUserStats("movies")
+                }
+            }
         }
     }
 

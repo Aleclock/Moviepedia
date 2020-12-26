@@ -2,7 +2,6 @@ package com.example.moviepedia.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUserStats() {
         val firestoreUtils = FirestoreUtils()
-        firestoreUtils.getUserStats(object : FirestoreUtils.FirestoreCallback {
+        firestoreUtils.getUserStats(object : FirestoreUtils.FirestoneCallback {
             override fun onCallback(list: MutableMap<String, Any>) {
                 if (tw_place_value != null)         tw_place_value.text = list["rank"].toString()
                 if (tw_watchlist_value != null)     tw_watchlist_value.text = list["watchlist"].toString()
@@ -58,7 +57,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUsername() {
         val firestoreUtils = FirestoreUtils()
-        firestoreUtils.getUserData(object : FirestoreUtils.FirestoreCallback {
+        firestoreUtils.getUserData(object : FirestoreUtils.FirestoneCallback {
             override fun onCallback(list: MutableMap<String, Any>) {
                 if (tw_profile_username != null)
                     tw_profile_username.text = list["username"].toString()

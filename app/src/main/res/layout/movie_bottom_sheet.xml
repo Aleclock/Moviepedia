@@ -70,11 +70,11 @@
             app:justifyContent="center">
 
         <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/btn1"
+            android:id="@+id/toggle_sheet_btn_movie_watchlist"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             app:toggle_textSize="@dimen/text_size_small"
-            app:toggle_text="@string/add_watchlist"
+            app:toggle_text="@string/watchlist"
             app:toggle_textColor="@color/white"
             app:toggle_backgroundColor="@color/black"
             app:toggle_borderWidth = "2dp"
@@ -84,7 +84,7 @@
             app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
 
         <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/btn2"
+            android:id="@+id/toggle_sheet_btn_movie_watched"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             app:toggle_textSize="@dimen/text_size_small"

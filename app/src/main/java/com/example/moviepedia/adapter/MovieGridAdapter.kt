@@ -12,9 +12,9 @@ import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.dialog.MovieBottomSheet
 import com.example.moviepedia.tmdb.Movie
 
-class MovieGridAdapter(val context: Context, val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var listOfMovies = listOf<Movie>()
+    private var listOfMovies = listOf<Movie>()
     private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

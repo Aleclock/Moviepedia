@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.irozon.sneaker.Sneaker
@@ -87,6 +88,10 @@ class LoginActivity : AppCompatActivity() {
 
         fun signOut() {
             mAuth.signOut()
+        }
+
+        fun getUser(): FirebaseUser {
+            return mAuth.currentUser!!
         }
 
         fun getEmail() : String {
