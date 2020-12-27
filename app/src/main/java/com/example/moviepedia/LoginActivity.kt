@@ -24,7 +24,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val dbSettings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()
+        val dbSettings = FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                .build()
         db.firestoreSettings = dbSettings
 
         val mAuth = FirebaseAuth.getInstance()

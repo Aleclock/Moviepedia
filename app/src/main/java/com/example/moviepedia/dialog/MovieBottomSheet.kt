@@ -3,15 +3,17 @@ package com.example.moviepedia.dialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.example.moviepedia.db.FirestoreUtils
+import com.example.moviepedia.model.FirestoreItem
 import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.WatchedItem
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
-import kotlinx.android.synthetic.main.profile_stats.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
 
@@ -26,10 +28,9 @@ open class MovieBottomSheet {
 
         setMovieInfo(mBottomSheetDialog, movie)
         manageToggle(mBottomSheetDialog, movie)
-        manageSeekbar(mBottomSheetDialog)
     }
 
-    private fun checkInFirestore(toggle: ThemedToggleButtonGroup, movie: Movie) {
+    private fun checkInFirestore(mBottomSheetDialog: RoundedBottomSheetDialog, toggle: ThemedToggleButtonGroup, movie: Movie) {
         val firestoreUtils = FirestoreUtils()
 
         firestoreUtils.isInWatchlist(LoginActivity.getUser(), movie, object : FirestoreUtils.FirestorePresenceCallback {
@@ -41,8 +42,12 @@ open class MovieBottomSheet {
 
         firestoreUtils.isInWatched(LoginActivity.getUser(), movie, object : FirestoreUtils.FirestorePresenceCallback {
             override fun onCallback(value: MutableMap<String, Any?>) {
-                if (value["presence"] as Boolean)
+                if (value["presence"] as Boolean) {
                     toggle.selectButtonWithAnimation(R.id.toggle_sheet_btn_movie_watched)
+                    val watchedItem = value["item"] as WatchedItem
+                    manageSeekbar(mBottomSheetDialog, watchedItem.id, watchedItem.rating)
+                } else
+                    setSeekbarInvisible(mBottomSheetDialog)
             }
 
         })
@@ -50,6 +55,8 @@ open class MovieBottomSheet {
 
     private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
         val toggle = mBottomSheetDialog.findViewById<ThemedToggleButtonGroup>(R.id.toggle_group_movie_sheet)
+
+        checkInFirestore(mBottomSheetDialog, toggle!!, movie)
         toggle?.setOnSelectListener { button: ThemedButton ->
             val firestoreUtils = FirestoreUtils()
 
@@ -67,19 +74,35 @@ open class MovieBottomSheet {
                     if (button.isSelected) {
                         firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie)
                         firestoreUtils.updateUserStats("movies")
+                        manageSeekbar(mBottomSheetDialog, movie.id, null)
                     } else {
                         firestoreUtils.removeMovieToWatched(LoginActivity.getUser(), movie)
                         firestoreUtils.updateUserStats("watchlist")
+                        setSeekbarInvisible(mBottomSheetDialog)
                     }
                 }
             }
         }
-
-        checkInFirestore(toggle!!, movie)
     }
 
-    private fun manageSeekbar(mBottomSheetDialog: RoundedBottomSheetDialog) {
+    // TODO aggiungere animazioni di entrata/uscita del seekbar
+    private fun setSeekbarInvisible(mBottomSheetDialog: RoundedBottomSheetDialog) {
         val seekbar = mBottomSheetDialog.findViewById<RangeSeekBar>(R.id.range_seekbar)
+        seekbar?.visibility= View.INVISIBLE
+    }
+
+    private fun setSeekbarVisible (mBottomSheetDialog: RoundedBottomSheetDialog) {
+        val seekbar = mBottomSheetDialog.findViewById<RangeSeekBar>(R.id.range_seekbar)
+        seekbar?.visibility= View.VISIBLE
+    }
+
+    private fun manageSeekbar(mBottomSheetDialog: RoundedBottomSheetDialog, movie_id : Long, rating: Int?) {
+        val seekbar = mBottomSheetDialog.findViewById<RangeSeekBar>(R.id.range_seekbar)
+        setSeekbarVisible(mBottomSheetDialog)
+
+        if (rating != null)
+            seekbar?.setProgress(rating.toFloat())
+
         seekbar?.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
                 //TODO("Not yet implemented")
@@ -91,12 +114,12 @@ open class MovieBottomSheet {
                     rightValue: Float,
                     isFromUser: Boolean
             ) {
-                Log.d(TAG, leftValue.toString())
             }
 
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-                //TODO("Not yet implemented")
+                FirestoreUtils().updateWatchedItem(LoginActivity.getUser(), movie_id , "rating", view?.leftSeekBar!!.progress)
             }
+
         })
     }
 

@@ -2,6 +2,7 @@ package com.example.moviepedia.db
 
 import android.util.Log
 import com.example.moviepedia.LoginActivity
+import com.example.moviepedia.R
 import com.example.moviepedia.model.FirestoreItem
 import com.example.moviepedia.model.Movie
 import com.example.moviepedia.model.WatchedItem
@@ -60,10 +61,16 @@ open class FirestoreUtils {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
         val watchlistItem = WatchlistItem(movie.id, "movie", Timestamp(Date()),firestoreItem)
 
-        db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
-                .set(watchlistItem)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+        isInWatchlist(LoginActivity.getUser(), movie, object : FirestorePresenceCallback {
+            override fun onCallback(value: MutableMap<String, Any?>) {
+                if (!(value["presence"] as Boolean)) {
+                    db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
+                        .set(watchlistItem)
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                }
+            }
+        })
     }
 
     fun removeMovieToWatchlist(userID: FirebaseUser, movie: Movie) {
@@ -73,14 +80,27 @@ open class FirestoreUtils {
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
+    /*
+    Before adding Movie to Firestore check if the movie is already present. In this way the watchedItem is not overwritten
+    (solved rating, review and watchedDate problems)
+     */
     fun addMovieToWatched(userID: FirebaseUser, movie: Movie) {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
         val watchedItem = WatchedItem(movie.id,"movie", null, null, Timestamp(Date()),firestoreItem,null)
 
-        db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
-                .set(watchedItem)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+        isInWatched(LoginActivity.getUser(), movie, object : FirestorePresenceCallback {
+            override fun onCallback(value: MutableMap<String, Any?>) {
+                if (!(value["presence"] as Boolean)) {
+                    db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
+                        .set(watchedItem)
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+                } else {
+
+                }
+            }
+
+        })
     }
 
     fun removeMovieToWatched(userID: FirebaseUser, movie: Movie) {
@@ -88,6 +108,11 @@ open class FirestoreUtils {
             .delete()
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
+    fun updateWatchedItem(userID: FirebaseUser, movie_id: Long, key: String, value: Any) {
+        db.collection("movies").document(userID.uid).collection("watched").document(movie_id.toString())
+                .update(key, value)
     }
 
     fun updateUserStats(key: String) {
