@@ -2,8 +2,237 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MovieActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageview_movie"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tw_movie_title"
+            android:text="Tenet"
+            android:textSize="@dimen/text_size_big"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_movie"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tw_movie_resease_date"
+            android:text="2020"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/gray"
+            app:layout_constraintTop_toBottomOf="@+id/tw_movie_title"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tw_movie_director"
+            android:text="Wes Anderson"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/gray"
+            android:layout_marginStart="@dimen/margin"
+            app:layout_constraintTop_toBottomOf="@+id/tw_movie_title"
+            app:layout_constraintStart_toEndOf="@+id/tw_movie_resease_date"/>
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+            android:id="@+id/toggle_group_movie_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/margin"
+            app:toggle_selectableAmount="2"
+            app:toggle_requiredAmount="0"
+            app:layout_constraintTop_toBottomOf="@+id/tw_movie_director"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:justifyContent="center">
+
+        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+
+        <!-- https://stackoverflow.com/questions/4946295/android-expand-collapse-animation -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cl_item_detail_overview"
+            android:background="@drawable/custom_stroke_layout"
+            android:layout_marginStart="@dimen/margin5"
+            android:layout_marginEnd="@dimen/margin5"
+            app:layout_constraintTop_toBottomOf="@+id/toggle_group_movie_sheet"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tw_item_detail_overview_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/overview"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:id="@+id/include_detail_body_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                layout="@layout/item_detail_overview_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_overview_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cl_item_detail_stats"
+            android:background="@drawable/custom_stroke_layout"
+            android:layout_marginStart="@dimen/margin5"
+            android:layout_marginEnd="@dimen/margin5"
+            app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_overview"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tw_item_detail_stats_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/insights"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:id="@+id/include_detail_body_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                layout="@layout/item_detail_stats_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_stats_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cl_item_detail_info"
+            android:background="@drawable/custom_stroke_layout"
+            android:layout_marginStart="@dimen/margin5"
+            android:layout_marginEnd="@dimen/margin5"
+            app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_stats"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tw_item_detail_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/info"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:id="@+id/include_detail_body_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                layout="@layout/item_detail_overview_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_info_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cl_item_detail_cast"
+            android:background="@drawable/custom_stroke_layout"
+            android:layout_marginStart="@dimen/margin5"
+            android:layout_marginEnd="@dimen/margin5"
+            app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_info"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tw_item_detail_cast_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/cast"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:id="@+id/include_detail_body_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                layout="@layout/item_detail_overview_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_cast_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cl_item_detail_related"
+            android:background="@drawable/custom_stroke_layout"
+            android:layout_marginStart="@dimen/margin5"
+            android:layout_marginEnd="@dimen/margin5"
+            app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_cast"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tw_item_detail_related_title"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/related_movies"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_big"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:id="@+id/include_detail_body_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                layout="@layout/item_detail_overview_body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_related_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

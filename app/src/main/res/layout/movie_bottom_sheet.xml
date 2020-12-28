@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     <TextView
-        android:id="@+id/tw_movie_title"
+        android:id="@+id/tw_bs_movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
@@ -25,10 +25,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tw_movie_rating"
+        android:id="@+id/tw_bs_movie_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_20"
         android:textColor="@color/white"
         android:gravity="end"
         android:layout_marginStart="@dimen/margin"
@@ -38,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/tw_movie_resease_date"
+        android:id="@+id/tw_bs_movie_resease_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"
@@ -165,6 +165,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tw_review_log" />
+
+        <TextView
+            android:id="@+id/tw_go_to_film"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:gravity="start"
+            android:text="@string/go_to_film"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tw_add_to_list" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

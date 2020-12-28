@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         manageBottomBar()
     }
 
+
+
     private fun setFragment(fragment: Fragment) {
         supportFragmentManager
                 .beginTransaction()

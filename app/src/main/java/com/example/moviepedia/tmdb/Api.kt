@@ -3,6 +3,7 @@ package com.example.moviepedia.tmdb
 import com.example.moviepedia.BuildConfig.TMDB_key
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
@@ -45,4 +46,16 @@ interface Api {
     fun getLatestTVShow(
         @Query("api_key") apiKey: String = TMDB_key
     ): Call<GetTVShowResponse>
+
+    @GET("movie/{movie_id}")
+    fun getMovieDetail(
+        @Path("movie_id") movie_id : Int,
+        @Query("api_key") apiKey: String = TMDB_key
+    ): Call<GetMovieDetailResponse>
+
+    @GET("movie/{movie_id}/credits")
+    fun getMovieCredits(
+        @Path("movie_id") movie_id : Int,
+        @Query("api_key") apiKey: String = TMDB_key
+    ): Call<GetMovieCreditsResponse>
 }

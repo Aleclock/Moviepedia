@@ -11,6 +11,7 @@ import com.example.moviepedia.R
 import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.dialog.MovieBottomSheet
 import com.example.moviepedia.model.Movie
+import com.google.gson.Gson
 
 class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -30,15 +31,12 @@ class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutI
 
         holder.itemView.setOnClickListener{
             val intent = Intent(context, MovieActivity::class.java)
+            intent.putExtra("movie", Gson().toJson(listOfMovies[position]))
             ContextCompat.startActivity(context, intent, null)
-            Log.d(TAG, listOfMovies[position].toString())
         }
 
         holder.itemView.setOnLongClickListener {
-
             MovieBottomSheet().createDialog(context, listOfMovies[position], layoutInflater)
-
-            Log.d(TAG, "long click $listOfMovies[position].toString()")
             true
         }
     }

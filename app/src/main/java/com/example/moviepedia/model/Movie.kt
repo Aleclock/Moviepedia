@@ -2,7 +2,7 @@ package com.example.moviepedia.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Movie(
+data class Movie (
     @SerializedName("id") val id: Long,
     @SerializedName("title") val title: String,
     @SerializedName("original_title") val original_title: String,

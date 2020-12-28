@@ -100,6 +100,10 @@ dependencies {
     // https://github.com/Jay-Goo/RangeSeekBar
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 
+    // https://github.com/skydoves/ExpandableLayout
+    //implementation "com.github.skydoves:expandablelayout:1.0.6"
+
+
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.1.1')
 

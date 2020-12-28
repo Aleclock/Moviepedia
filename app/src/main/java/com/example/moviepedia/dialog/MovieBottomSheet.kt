@@ -1,21 +1,25 @@
 package com.example.moviepedia.dialog
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog
 import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
+import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.db.FirestoreUtils
-import com.example.moviepedia.model.FirestoreItem
 import com.example.moviepedia.model.Movie
 import com.example.moviepedia.model.WatchedItem
+import com.google.gson.Gson
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+
 
 open class MovieBottomSheet {
     val TAG = "MovieBottomSheet"
@@ -26,8 +30,29 @@ open class MovieBottomSheet {
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
+        manageButtons(context, mBottomSheetDialog, movie)
         setMovieInfo(mBottomSheetDialog, movie)
         manageToggle(mBottomSheetDialog, movie)
+    }
+
+    private fun manageButtons(context: Context, mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
+
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_review_log)!!.setOnClickListener {
+            //val intent = Intent(context, SettingsActivity::class.java)
+            //intent.putExtra()
+            //startActivity(intent)
+        }
+
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_add_to_list)!!.setOnClickListener {
+            // TODO
+        }
+
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_go_to_film)!!.setOnClickListener {
+            val intent = Intent(context, MovieActivity::class.java)
+            intent.putExtra("movie", Gson().toJson(movie))
+            startActivity(context,intent,null)
+            mBottomSheetDialog.dismiss()
+        }
     }
 
     private fun checkInFirestore(mBottomSheetDialog: RoundedBottomSheetDialog, toggle: ThemedToggleButtonGroup, movie: Movie) {
@@ -57,7 +82,7 @@ open class MovieBottomSheet {
         val toggle = mBottomSheetDialog.findViewById<ThemedToggleButtonGroup>(R.id.toggle_group_movie_sheet)
 
         checkInFirestore(mBottomSheetDialog, toggle!!, movie)
-        toggle?.setOnSelectListener { button: ThemedButton ->
+        toggle.setOnSelectListener { button: ThemedButton ->
             val firestoreUtils = FirestoreUtils()
 
             when (button.id) {
@@ -124,8 +149,12 @@ open class MovieBottomSheet {
     }
 
     private fun setMovieInfo(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
-        mBottomSheetDialog.findViewById<TextView>(R.id.tw_movie_title)?.text =  movie.title
-        mBottomSheetDialog.findViewById<TextView>(R.id.tw_movie_resease_date)?.text = movie.releaseDate
-        mBottomSheetDialog.findViewById<TextView>(R.id.tw_movie_rating)?.text = movie.rating.toString()
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_title)?.text =  movie.title
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_resease_date)?.text = getMovieYear(movie.releaseDate)
+        mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_rating)?.text = movie.rating.toString()
+    }
+
+    private fun getMovieYear(date: String): String {
+        return date.substring(0,4)
     }
 }

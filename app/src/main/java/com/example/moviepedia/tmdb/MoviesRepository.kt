@@ -1,5 +1,6 @@
 package com.example.moviepedia.tmdb
 
+import android.util.Log
 import com.example.moviepedia.model.Movie
 import com.example.moviepedia.model.TVShow
 import retrofit2.Call
@@ -18,6 +19,68 @@ object MoviesRepository {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/") .addConverterFactory(GsonConverterFactory.create()) .build()
         api = retrofit.create(Api::class.java) }
+
+    fun getMovieDetail(
+        movie: Movie,
+        onSuccess: (response: GetMovieDetailResponse) -> Unit,
+        onError: () -> Unit
+    ) {
+        api.getMovieDetail(movie_id = movie.id.toInt())
+            .enqueue(object  : Callback<GetMovieDetailResponse> {
+                override fun onResponse(
+                    call: Call<GetMovieDetailResponse>,
+                    response: Response<GetMovieDetailResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMovieDetailResponse>, t: Throwable) {
+                    onError.invoke()
+                }
+
+            })
+    }
+
+    fun getMovieCredits(
+        movie: Movie,
+        onSuccess: (response: GetMovieCreditsResponse) -> Unit,
+        onError: () -> Unit
+    ) {
+        api.getMovieCredits(movie_id = movie.id.toInt())
+            .enqueue(object : Callback<GetMovieCreditsResponse> {
+                override fun onResponse(
+                    call: Call<GetMovieCreditsResponse>,
+                    response: Response<GetMovieCreditsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMovieCreditsResponse>, t: Throwable) {
+                    onError.invoke()
+                }
+
+            })
+    }
 
     fun getPopularMovies(
             page: Int = 1,
