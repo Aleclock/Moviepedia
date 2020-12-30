@@ -17,7 +17,7 @@ class FirestoreItem (
     val adult: Boolean? = false,
     val origin_country: List<String>? = listOf()
 ) {
-    fun movieToFirestoreItem(movie: Movie) : FirestoreItem {
+    fun movieToFirestoreItem(movie: MovieTMDB) : FirestoreItem {
         return FirestoreItem(
                 movie.id,
                 movie.title,

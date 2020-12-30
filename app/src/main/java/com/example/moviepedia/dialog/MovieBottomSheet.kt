@@ -2,7 +2,6 @@ package com.example.moviepedia.dialog
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -12,7 +11,7 @@ import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.db.FirestoreUtils
-import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.model.WatchedItem
 import com.google.gson.Gson
 import com.jaygoo.widget.OnRangeChangedListener
@@ -24,7 +23,7 @@ import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
 open class MovieBottomSheet {
     val TAG = "MovieBottomSheet"
 
-    fun createDialog(context: Context, movie: Movie, layoutInflater: LayoutInflater) {
+    fun createDialog(context: Context, movie: MovieTMDB, layoutInflater: LayoutInflater) {
         val mBottomSheetDialog = RoundedBottomSheetDialog(context)
         val sheetView = layoutInflater.inflate(R.layout.movie_bottom_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
@@ -35,7 +34,7 @@ open class MovieBottomSheet {
         manageToggle(mBottomSheetDialog, movie)
     }
 
-    private fun manageButtons(context: Context, mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
+    private fun manageButtons(context: Context, mBottomSheetDialog: RoundedBottomSheetDialog, movie: MovieTMDB) {
 
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_review_log)!!.setOnClickListener {
             //val intent = Intent(context, SettingsActivity::class.java)
@@ -55,7 +54,7 @@ open class MovieBottomSheet {
         }
     }
 
-    private fun checkInFirestore(mBottomSheetDialog: RoundedBottomSheetDialog, toggle: ThemedToggleButtonGroup, movie: Movie) {
+    private fun checkInFirestore(mBottomSheetDialog: RoundedBottomSheetDialog, toggle: ThemedToggleButtonGroup, movie: MovieTMDB) {
         val firestoreUtils = FirestoreUtils()
 
         firestoreUtils.isInWatchlist(LoginActivity.getUser(), movie, object : FirestoreUtils.FirestorePresenceCallback {
@@ -78,7 +77,7 @@ open class MovieBottomSheet {
         })
     }
 
-    private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
+    private fun manageToggle(mBottomSheetDialog: RoundedBottomSheetDialog, movie: MovieTMDB) {
         val toggle = mBottomSheetDialog.findViewById<ThemedToggleButtonGroup>(R.id.toggle_group_movie_sheet)
 
         checkInFirestore(mBottomSheetDialog, toggle!!, movie)
@@ -148,7 +147,7 @@ open class MovieBottomSheet {
         })
     }
 
-    private fun setMovieInfo(mBottomSheetDialog: RoundedBottomSheetDialog, movie: Movie) {
+    private fun setMovieInfo(mBottomSheetDialog: RoundedBottomSheetDialog, movie: MovieTMDB) {
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_title)?.text =  movie.title
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_resease_date)?.text = getMovieYear(movie.releaseDate)
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_bs_movie_rating)?.text = movie.rating.toString()

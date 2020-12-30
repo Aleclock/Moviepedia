@@ -1,13 +1,11 @@
 package com.example.moviepedia.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.model.FirestoreItem
-import com.example.moviepedia.model.Movie
 
 class FirestoreItemGridAdapter (val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var listOfItem = listOf<FirestoreItem>()

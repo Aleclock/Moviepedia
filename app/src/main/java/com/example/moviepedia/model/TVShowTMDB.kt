@@ -2,7 +2,7 @@ package com.example.moviepedia.model
 
 import com.google.gson.annotations.SerializedName
 
-data class TVShow(
+data class TVShowTMDB(
     @SerializedName("id") val id: Long,
     @SerializedName("name") val name: String,
     @SerializedName("original_name") val original_name: String,

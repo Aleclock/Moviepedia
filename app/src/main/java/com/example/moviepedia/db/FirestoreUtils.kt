@@ -2,9 +2,8 @@ package com.example.moviepedia.db
 
 import android.util.Log
 import com.example.moviepedia.LoginActivity
-import com.example.moviepedia.R
 import com.example.moviepedia.model.FirestoreItem
-import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.model.WatchedItem
 import com.example.moviepedia.model.WatchlistItem
 import com.google.firebase.Timestamp
@@ -57,7 +56,7 @@ open class FirestoreUtils {
      * ------------------------------------------------------------
      */
 
-    fun addMovieToWatchlist(userID: FirebaseUser, movie: Movie) {
+    fun addMovieToWatchlist(userID: FirebaseUser, movie: MovieTMDB) {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
         val watchlistItem = WatchlistItem(movie.id, "movie", Timestamp(Date()),firestoreItem)
 
@@ -73,7 +72,7 @@ open class FirestoreUtils {
         })
     }
 
-    fun removeMovieToWatchlist(userID: FirebaseUser, movie: Movie) {
+    fun removeMovieToWatchlist(userID: FirebaseUser, movie: MovieTMDB) {
         db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
             .delete()
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
@@ -84,7 +83,7 @@ open class FirestoreUtils {
     Before adding Movie to Firestore check if the movie is already present. In this way the watchedItem is not overwritten
     (solved rating, review and watchedDate problems)
      */
-    fun addMovieToWatched(userID: FirebaseUser, movie: Movie) {
+    fun addMovieToWatched(userID: FirebaseUser, movie: MovieTMDB) {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
         val watchedItem = WatchedItem(movie.id,"movie", null, null, Timestamp(Date()),firestoreItem,null)
 
@@ -103,7 +102,7 @@ open class FirestoreUtils {
         })
     }
 
-    fun removeMovieToWatched(userID: FirebaseUser, movie: Movie) {
+    fun removeMovieToWatched(userID: FirebaseUser, movie: MovieTMDB) {
         db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
             .delete()
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
@@ -200,7 +199,7 @@ open class FirestoreUtils {
             }
     }
 
-    fun isInWatchlist(userID: FirebaseUser, movie: Movie, firestorePresenceCallback: FirestorePresenceCallback){
+    fun isInWatchlist(userID: FirebaseUser, movie: MovieTMDB, firestorePresenceCallback: FirestorePresenceCallback){
         val item: MutableMap<String, Any?> = HashMap()
 
         db.collection("movies").document(userID.uid).collection("watchlist").document(movie.id.toString())
@@ -224,7 +223,7 @@ open class FirestoreUtils {
             }
     }
 
-    fun isInWatched(userID: FirebaseUser, movie: Movie, firestorePresenceCallback: FirestorePresenceCallback){
+    fun isInWatched(userID: FirebaseUser, movie: MovieTMDB, firestorePresenceCallback: FirestorePresenceCallback){
         val item: MutableMap<String, Any?> = HashMap()
 
         db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())

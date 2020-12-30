@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviepedia.R
 import com.example.moviepedia.adapter.MovieGridAdapter
 import com.example.moviepedia.adapter.TVShowGridAdapter
-import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.tmdb.MoviesRepository
-import com.example.moviepedia.model.TVShow
+import com.example.moviepedia.model.TVShowTMDB
 import kotlinx.android.synthetic.main.fragment_discover.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
 
@@ -37,11 +37,11 @@ class DiscoverFragment : Fragment() {
         initToggleGroup()
     }
 
-    private fun onPopularMoviesFetched(movies: List<Movie>) {
+    private fun onPopularMoviesFetched(movies: List<MovieTMDB>) {
         popularMoviesAdapter.updateMovies(movies)
     }
 
-    private fun onPopularTVShowsFetched(tvShows: List<TVShow>) {
+    private fun onPopularTVShowsFetched(tvShows: List<TVShowTMDB>) {
         popularTVShowAdapter.updateTVShows(tvShows)
     }
     private fun onError() {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/original_title"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/info_row_original_title"
+                android:text="@string/original_title"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/original_language"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/original_language"
+                android:text="@string/original_language"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/budget"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/info_row_budget"
+                android:text="@string/original_title"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/revenue"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/info_row_revenue"
+                android:text="@string/original_title"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/companies"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/info_row_production_companies"
+                android:text="@string/original_title"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/margin"/>
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

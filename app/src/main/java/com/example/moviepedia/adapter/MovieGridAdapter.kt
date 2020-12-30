@@ -2,7 +2,6 @@ package com.example.moviepedia.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.dialog.MovieBottomSheet
-import com.example.moviepedia.model.Movie
+import com.example.moviepedia.model.MovieTMDB
 import com.google.gson.Gson
 
 class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var listOfMovies = listOf<Movie>()
+    private var listOfMovies = listOf<MovieTMDB>()
     private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -41,7 +40,7 @@ class MovieGridAdapter(val context: Context, private val layoutInflater: LayoutI
         }
     }
 
-    fun updateMovies(movies: List<Movie>) {
+    fun updateMovies(movies: List<MovieTMDB>) {
         this.listOfMovies = movies
         notifyDataSetChanged()
     }

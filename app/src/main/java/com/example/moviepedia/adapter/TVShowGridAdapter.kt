@@ -9,11 +9,11 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.TVShowActivity
-import com.example.moviepedia.model.TVShow
+import com.example.moviepedia.model.TVShowTMDB
 
 class TVShowGridAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var listOfTVShows = listOf<TVShow>()
+    var listOfTVShows = listOf<TVShowTMDB>()
     private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -42,7 +42,7 @@ class TVShowGridAdapter(val context: Context) : RecyclerView.Adapter<RecyclerVie
 
     }
 
-    fun updateTVShows(tvShows: List<TVShow>) {
+    fun updateTVShows(tvShows: List<TVShowTMDB>) {
         this.listOfTVShows = tvShows
         notifyDataSetChanged()
     }
