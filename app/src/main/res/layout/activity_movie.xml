@@ -6,7 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+<!-- TODO aggiungere tasto back-->
+
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/cl_item_detail_main"
     android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,8 +27,8 @@
             android:id="@+id/cardview_detail_imageview"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="5dp"
+            android:layout_margin="@dimen/margin5"
+            app:cardCornerRadius="@dimen/margin5"
             android:background="@color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/item_detail_toggle_group"
@@ -66,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tw_movie_resease_date"
-                android:layout_marginTop="@dimen/margin5"
+                android:layout_marginTop="@dimen/margin2"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/gray"
                 app:layout_constraintTop_toBottomOf="@+id/tw_movie_title"
@@ -75,10 +78,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tw_movie_runtime"
+                android:layout_marginTop="@dimen/margin2"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/gray"
+                android:layout_marginStart="@dimen/margin"
+                app:layout_constraintTop_toBottomOf="@+id/tw_movie_title"
+                app:layout_constraintStart_toEndOf="@+id/tw_movie_resease_date"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/tw_movie_director_title"
                 android:text="@string/directed_by"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin5"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/gray"
                 app:layout_constraintTop_toBottomOf="@+id/tw_movie_resease_date"
@@ -89,23 +102,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tw_movie_director"
                 android:text="Pippo Baudo"
-                android:layout_marginTop="@dimen/margin5"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/gray"
                 android:layout_marginStart="@dimen/margin"
                 app:layout_constraintTop_toBottomOf="@+id/tw_movie_resease_date"
                 app:layout_constraintStart_toEndOf="@+id/tw_movie_director_title"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tw_movie_runtime"
-                android:layout_marginTop="@dimen/margin5"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="@color/gray"
-                android:layout_marginStart="@dimen/margin"
-                app:layout_constraintTop_toBottomOf="@+id/tw_movie_title"
-                app:layout_constraintStart_toEndOf="@+id/tw_movie_resease_date"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,12 +115,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
+            app:toggle_horizontalSpacing="@dimen/margin5"
             app:toggle_requiredAmount="0"
             app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_principal_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cardview_detail_imageview"
-            app:justifyContent="flex_start"
             app:flexWrap="wrap">
+            <!-- app:justifyContent="flex_start"
+            -->
+
+            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                android:id="@+id/toggle_profile_btn_watchlist"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                app:toggle_textSize="@dimen/text_size_small"
+                app:toggle_text="@string/watchlist"
+                app:toggle_textColor="@color/white"
+                app:toggle_backgroundColor="@color/black"
+                app:toggle_borderWidth = "2dp"
+                app:toggle_selectedBorderWidth = "2dp"
+                app:toggle_borderColor="@color/white"
+                app:toggle_selectedBorderColor = "@color/fireOpal"
+                app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
 
         </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 

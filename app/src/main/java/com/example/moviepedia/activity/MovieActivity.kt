@@ -1,11 +1,18 @@
 package com.example.moviepedia.activity
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
 import com.example.moviepedia.R
 import com.example.moviepedia.model.GenreTMDB
@@ -13,11 +20,14 @@ import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.tmdb.GetMovieCreditsResponse
 import com.example.moviepedia.tmdb.GetMovieDetailResponse
 import com.example.moviepedia.tmdb.MoviesRepository
+import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.item_detail_info_body.*
 import kotlinx.android.synthetic.main.item_detail_overview_body.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+import java.security.AccessController.getContext
 import java.text.NumberFormat
 import java.util.*
 
@@ -66,6 +76,7 @@ class MovieActivity : AppCompatActivity() {
         original_language.text = getCountryName(movieDetail.original_language)
         info_row_budget.text = getCurrencyValue(movieDetail.budget.toString())
         info_row_revenue.text = getCurrencyValue(movieDetail.revenue.toString())
+        info_row_production_companies.text = movieDetail.production_companies.map { it.name }.joinToString(", ")
 
     }
 
@@ -80,19 +91,31 @@ class MovieActivity : AppCompatActivity() {
             toggleButton.borderColor = resources.getColor(R.color.white)
             toggleButton.selectedBorderColor = resources.getColor(R.color.white)
             toggleButton.borderWidth = 5f
+            toggleButton.setPadding(0,0,0,0)
             toggleButton.selectedBorderWidth = 5f
             toggleButton.textColor = resources.getColor(R.color.white)
-            toggleButton.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            toggleButton.layout(0,0,0,0)
+            toggleButton.applyToTexts { it.textSize = 12f }
+            toggleButton.applyToCards {  RelativeLayout.LayoutParams(MATCH_PARENT, dpToPixels(30f))  }
+            toggleButton.gravity = Gravity.CENTER_VERTICAL
 
-            val height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40f, resources.displayMetrics)
+            /*<nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/toggle_profile_btn_watchlist"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:toggle_textSize="@dimen/text_size_small"
+            app:toggle_text="@string/watchlist"
+            app:toggle_textColor="@color/white"
+            app:toggle_backgroundColor="@color/black"
+            app:toggle_borderWidth = "2dp"
+            app:toggle_selectedBorderWidth = "2dp"
+            app:toggle_borderColor="@color/white"
+            app:toggle_selectedBorderColor = "@color/fireOpal"
+            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>*/
 
-
-            item_detail_toggle_group.addView(toggleButton,
-                    ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        height.toInt()
-            ))
+            //val params = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            val params = ConstraintLayout.LayoutParams(WRAP_CONTENT, dpToPixels(30f))
+            params.setMargins(5,5,5,5)
+            item_detail_toggle_group.addView(toggleButton, params)
             //https://stackoverflow.com/questions/29028168/how-to-pass-attributeset-when-creating-view-programmatically-in-android
         }
     }
@@ -139,11 +162,17 @@ class MovieActivity : AppCompatActivity() {
         return Locale(countryName).getDisplayLanguage(Locale.ENGLISH)
     }
 
+    private fun dpToPixels(dp: Float): Int {
+        val metrics: DisplayMetrics = resources.displayMetrics
+        val fpixels = metrics.density * dp
+        val pixel = (fpixels + 0.5f).toInt()
+        return pixel
+    }
+
     private fun getCurrencyValue(value: String): String {
         val format = NumberFormat.getCurrencyInstance()
         format.maximumFractionDigits = 0
         format.currency = Currency.getInstance("USD")
-
         return format.format(value.toInt())
     }
 }

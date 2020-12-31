@@ -46,7 +46,7 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tw_movie_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tw_bs_movie_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

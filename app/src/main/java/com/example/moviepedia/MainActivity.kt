@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val userId = intent.getStringExtra("user_id")
-
         var moviesFragment = MoviesFragment()
         setFragment(moviesFragment)
         manageBottomBar()
@@ -42,6 +40,7 @@ class MainActivity : AppCompatActivity() {
      *  https://github.com/iammert/ReadableBottomBar
      */
     private fun manageBottomBar() {
+        // TODO capire perchè ogni tanto tuona
         readable_bottom_bar.setOnItemSelectListener( object :ReadableBottomBar.ItemSelectListener{
             override fun onItemSelected(index: Int) {
                 when(index) {

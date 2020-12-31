@@ -1,6 +1,8 @@
 package com.example.moviepedia.tmdb
 
 import com.example.moviepedia.model.GenreTMDB
+import com.example.moviepedia.model.ProductionCompanyTMDB
+import com.example.moviepedia.model.ProductionCountryTMDB
 import com.google.gson.annotations.SerializedName
 
 data class GetMovieDetailResponse (
@@ -24,13 +26,13 @@ data class GetMovieDetailResponse (
     @SerializedName("runtime") val runtime: Int,
     @SerializedName("status") val status: String, // Allowed Values: Rumored, Planned, In Production, Post Production, Released, Canceled
     @SerializedName("tagline") val tagline: String,
-    @SerializedName("video") val video: Boolean
+    @SerializedName("video") val video: Boolean,
+    @SerializedName("production_companies") val production_companies: List<ProductionCompanyTMDB>,
+    @SerializedName("production_countries") val production_countries: List<ProductionCountryTMDB>
 )
 
 /*
 TODO
 belongs_to_collection
-production_companies
-production_countries
 spoken_languages
  */
