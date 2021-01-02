@@ -113,6 +113,36 @@ object MoviesRepository {
             })
     }
 
+    fun getMovieProviders(
+        movie: MovieTMDB,
+        onSuccess: (response: GetMovieProvidersResponse) -> Unit,
+        onError: () -> Unit
+    ) {
+        api.getMovieProviders(movie_id = movie.id.toInt())
+                .enqueue(object : Callback<GetMovieProvidersResponse> {
+                    override fun onFailure(call: Call<GetMovieProvidersResponse>, t: Throwable) {
+                        onError.invoke()
+                    }
+
+                    override fun onResponse(
+                            call: Call<GetMovieProvidersResponse>,
+                            response: Response<GetMovieProvidersResponse>) {
+                        if (response.isSuccessful) {
+                            val responseBody = response.body()
+
+                            if (responseBody != null) {
+                                onSuccess.invoke(responseBody)
+                            } else {
+                                onError.invoke()
+                            }
+                        } else {
+                            onError.invoke()
+                        }
+                    }
+
+                })
+    }
+
 
     fun getTopRatedMovies(
         page: Int = 1,

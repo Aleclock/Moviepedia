@@ -14,10 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.moviepedia.R
 import com.example.moviepedia.model.GenreTMDB
 import com.example.moviepedia.model.MovieTMDB
-import com.example.moviepedia.tmdb.GetMovieCreditsResponse
-import com.example.moviepedia.tmdb.GetMovieDetailResponse
-import com.example.moviepedia.tmdb.GetMoviesResponse
-import com.example.moviepedia.tmdb.MoviesRepository
+import com.example.moviepedia.tmdb.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.activity_movie.tw_movie_title
@@ -58,6 +55,12 @@ class MovieActivity : AppCompatActivity() {
         MoviesRepository.getSimilariMovies(
                 movie,
                 onSuccess =  ::onSimilariMovieFetched,
+                onError = ::onError
+        )
+
+        MoviesRepository.getMovieProviders(
+                movie,
+                onSuccess = ::onMovieProvidersFetched,
                 onError = ::onError
         )
 
@@ -138,6 +141,12 @@ class MovieActivity : AppCompatActivity() {
 
 
         // TODO aggiornare tabella info
+    }
+
+    private fun onMovieProvidersFetched(providers: GetMovieProvidersResponse) {
+        Log.d(TAG, "Movie providers " + providers.results.IT.flatrate)
+
+        // TODO retrieve providers info
     }
 
     private fun onMovieCreditsFetched(credits: GetMovieCreditsResponse) {
