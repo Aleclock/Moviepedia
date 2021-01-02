@@ -1,5 +1,6 @@
 package com.example.moviepedia.tmdb
 
+import android.util.Log
 import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.model.TVShowTMDB
 import retrofit2.Call
@@ -7,6 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.reflect.KFunction1
 
 object MoviesRepository {
 
@@ -122,6 +124,68 @@ object MoviesRepository {
                 override fun onResponse(
                     call: Call<GetMoviesResponse>,
                     response: Response<GetMoviesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody.movies)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+                    onError.invoke()
+                }
+            })
+    }
+
+    fun getRecommendedMovies(
+            movie: MovieTMDB,
+            page: Int = 1,
+            onSuccess: (movies: List<MovieTMDB>) -> Unit,
+            onError: () -> Unit
+    ) {
+        api.getRecommendedMovies(movie_id = movie.id.toInt(), page = page)
+                .enqueue(object : Callback<GetMoviesResponse> {
+                    override fun onResponse(
+                            call: Call<GetMoviesResponse>,
+                            response: Response<GetMoviesResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val responseBody = response.body()
+
+                            if (responseBody != null) {
+                                onSuccess.invoke(responseBody.movies)
+                            } else {
+                                onError.invoke()
+                            }
+                        } else {
+                            onError.invoke()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+                        onError.invoke()
+                    }
+                })
+    }
+
+    fun getSimilariMovies(
+            movie: MovieTMDB,
+            page: Int = 1,
+            onSuccess: (movies: List<MovieTMDB>) -> Unit,
+            onError: () -> Unit
+    ) {
+        api.getSimilarMovies(movie_id = movie.id.toInt(), page = page)
+            .enqueue(object : Callback<GetMoviesResponse> {
+                override fun onResponse(
+                        call: Call<GetMoviesResponse>,
+                        response: Response<GetMoviesResponse>
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()

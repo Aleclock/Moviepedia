@@ -58,4 +58,24 @@ interface Api {
         @Path("movie_id") movie_id : Int,
         @Query("api_key") apiKey: String = TMDB_key
     ): Call<GetMovieCreditsResponse>
+
+    @GET("movie/{movie_id}/similar")
+    fun getSimilarMovies(
+        @Path("movie_id") movie_id: Int,
+        @Query("api_key") apiKey: String = TMDB_key,
+        @Query("page") page: Int
+    ): Call<GetMoviesResponse>
+
+    @GET("movie/{movie_id}/recommendations")
+    fun getRecommendedMovies(
+            @Path("movie_id") movie_id: Int,
+            @Query("api_key") apiKey: String = TMDB_key,
+            @Query("page") page: Int
+    ): Call<GetMoviesResponse>
+
+    /*@GET("movie/{movie_id}/watch/providers")
+    fun getWatchProviders(
+        @Path("movie_id") movie_id: Int,
+        @Query("api_key") apiKey: String = TMDB_key
+    ): Call<GetMovieProvidersResponse>*/
 }

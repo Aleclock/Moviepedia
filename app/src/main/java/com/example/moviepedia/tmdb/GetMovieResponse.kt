@@ -1,6 +1,5 @@
 package com.example.moviepedia.tmdb
 
-import com.example.moviepedia.model.GenreTMDB
 import com.example.moviepedia.model.MovieTMDB
 import com.google.gson.annotations.SerializedName
 

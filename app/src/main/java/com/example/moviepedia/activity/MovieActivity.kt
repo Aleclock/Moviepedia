@@ -3,26 +3,24 @@ package com.example.moviepedia.activity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
 import com.example.moviepedia.R
 import com.example.moviepedia.model.GenreTMDB
 import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.tmdb.GetMovieCreditsResponse
 import com.example.moviepedia.tmdb.GetMovieDetailResponse
+import com.example.moviepedia.tmdb.GetMoviesResponse
 import com.example.moviepedia.tmdb.MoviesRepository
-import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_movie.*
+import kotlinx.android.synthetic.main.activity_movie.tw_movie_title
 import kotlinx.android.synthetic.main.item_detail_info_body.*
 import kotlinx.android.synthetic.main.item_detail_overview_body.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
@@ -43,6 +41,7 @@ class MovieActivity : AppCompatActivity() {
         val json_movie = intent.getStringExtra("movie")
         val movie = Gson().fromJson(json_movie, MovieTMDB::class.java)
 
+        setBackButton()
         setPrincipalInfo(movie)
         MoviesRepository.getMovieDetail(
             movie,
@@ -54,6 +53,12 @@ class MovieActivity : AppCompatActivity() {
             movie,
             onSuccess = :: onMovieCreditsFetched,
             onError = ::onError
+        )
+
+        MoviesRepository.getSimilariMovies(
+                movie,
+                onSuccess =  ::onSimilariMovieFetched,
+                onError = ::onError
         )
 
         setTabListener()
@@ -120,6 +125,12 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+    private fun setBackButton() {
+        item_detail_btn_back.setOnClickListener {
+            super.finish()
+        }
+    }
+
     private fun onMovieDetailFetched(detail: GetMovieDetailResponse) {
         setToggleButtons(detail.genres)
         setDetailedInfo(detail)
@@ -132,6 +143,15 @@ class MovieActivity : AppCompatActivity() {
     private fun onMovieCreditsFetched(credits: GetMovieCreditsResponse) {
         Log.d(TAG, "Movie credits " + credits.toString())
         // TODO aggiornare crew layout e inserire director
+    }
+
+    private fun onSimilariMovieFetched(movies: List<MovieTMDB>) {
+        Log.d(TAG, "Similar movies: " + movies)
+        if (movies.isEmpty()) {
+            // TODO scrivere messaggio "Non ci sono film simili"
+        } else {
+            // update horizontal view
+        }
     }
 
     private fun onError() {
