@@ -113,12 +113,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tw_movie_director"
-                android:text="Pippo Baudo"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="@color/gray"
                 android:layout_marginStart="@dimen/margin"
                 app:layout_constraintTop_toBottomOf="@+id/tw_movie_resease_date"
-                app:layout_constraintStart_toEndOf="@+id/tw_movie_director_title"/>
+                app:layout_constraintStart_toEndOf="@+id/tw_movie_director_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -263,11 +262,11 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <include
-                android:id="@+id/include_detail_body_overview"
+                android:id="@+id/include_detail_body_cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                layout="@layout/item_detail_overview_body"
+                layout="@layout/item_detail_cast_body"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_cast_title" />
 

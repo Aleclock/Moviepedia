@@ -7,8 +7,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_item_detail_similar_movies_error"
-        android:text="@string/no_movies_found"
+        android:id="@+id/tv_item_detail_cast_error"
+        android:text="@string/no_cast_found"
         android:textSize="@dimen/text_size_medium"
         android:textColor="@color/white"
         android:visibility="gone"
@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerItemDetailSimilar"
+        android:id="@+id/recyclerItemDetailCast"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_margin="@dimen/margin5"

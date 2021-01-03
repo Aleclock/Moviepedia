@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.moviepedia.R
+import com.example.moviepedia.adapter.CastGridHorizontalAdapter
 import com.example.moviepedia.adapter.MovieGridHorizontalAdapter
 import com.example.moviepedia.model.GenreTMDB
 import com.example.moviepedia.model.MovieTMDB
@@ -21,6 +22,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.activity_movie.tw_movie_title
 import kotlinx.android.synthetic.main.fragment_discover.recyclerMovies
+import kotlinx.android.synthetic.main.item_detail_cast_body.*
 import kotlinx.android.synthetic.main.item_detail_info_body.*
 import kotlinx.android.synthetic.main.item_detail_overview_body.*
 import kotlinx.android.synthetic.main.item_detail_related_movie_body.*
@@ -34,6 +36,7 @@ class MovieActivity : AppCompatActivity() {
     val TAG = "MovieActivity"
 
     private lateinit var similarMoviesAdapter: MovieGridHorizontalAdapter
+    private lateinit var castMovieAdapter: CastGridHorizontalAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,16 +47,12 @@ class MovieActivity : AppCompatActivity() {
 
         setBackButton()
         setPrincipalInfo(movie)
+        initCastMovieView(movie)
         initSimilarMoviesView(movie)
+
         MoviesRepository.getMovieDetail(
             movie,
             onSuccess = :: onMovieDetailFetched,
-            onError = ::onError
-        )
-
-        MoviesRepository.getMovieCredits(
-            movie,
-            onSuccess = :: onMovieCreditsFetched,
             onError = ::onError
         )
 
@@ -133,11 +132,24 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+    private fun initCastMovieView(movie: MovieTMDB) {
+        recyclerItemDetailCast.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.HORIZONTAL, false)
+        castMovieAdapter = CastGridHorizontalAdapter(window.context, layoutInflater)
+
+        recyclerItemDetailCast.adapter = castMovieAdapter
+
+        MoviesRepository.getMovieCredits(
+                movie,
+                onSuccess = :: onMovieCreditsFetched,
+                onError = ::onError
+        )
+    }
+
     private fun initSimilarMoviesView(movie: MovieTMDB) {
-        recyclerMovies.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.HORIZONTAL, false)
+        recyclerItemDetailSimilar.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.HORIZONTAL, false)
         similarMoviesAdapter = MovieGridHorizontalAdapter(window.context, layoutInflater)
 
-        recyclerMovies.adapter = similarMoviesAdapter
+        recyclerItemDetailSimilar.adapter = similarMoviesAdapter
 
         MoviesRepository.getSimilariMovies(
                 movie,
@@ -150,9 +162,6 @@ class MovieActivity : AppCompatActivity() {
         setToggleButtons(detail.genres)
         setDetailedInfo(detail)
         Log.d(TAG, "Movie detail $detail")
-
-
-        // TODO aggiornare tabella info
     }
 
     private fun onMovieProvidersFetched(providers: GetMovieProvidersResponse) {
@@ -162,14 +171,20 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun onMovieCreditsFetched(credits: GetMovieCreditsResponse) {
-        Log.d(TAG, "Movie credits $credits")
-        // TODO aggiornare crew layout e inserire director
+        val directors = credits.crew.filter {it.job == "Director"}
+        val directorsNames = directors.map { it.name }
+        tw_movie_director.text = let { directorsNames.joinToString(", ") }
+
+        if (credits.cast.isEmpty()) {
+            tv_item_detail_cast_error.visibility = View.VISIBLE
+        } else {
+            castMovieAdapter.updateCast(credits.cast)
+        }
     }
 
     private fun onSimilariMovieFetched(movies: List<MovieTMDB>) {
-        Log.d(TAG, "Similar movies: $movies")
         if (movies.isEmpty()) {
-            tv_item_detail_similari_movies_error.visibility = View.VISIBLE
+            tv_item_detail_similar_movies_error.visibility = View.VISIBLE
         } else {
             similarMoviesAdapter.updateMovies(movies)
         }
@@ -188,7 +203,7 @@ class MovieActivity : AppCompatActivity() {
         tw_item_detail_overview_title.setOnClickListener { setVisibility(include_detail_body_overview)}
         tw_item_detail_stats_title.setOnClickListener { setVisibility(include_detail_body_stats)}
         tw_item_detail_info_title.setOnClickListener { setVisibility(include_detail_body_info) }
-        tw_item_detail_cast_title.setOnClickListener {}
+        tw_item_detail_cast_title.setOnClickListener { setVisibility(include_detail_body_cast)}
         tw_item_detail_related_title.setOnClickListener { setVisibility(include_detail_body_related_movies)}
     }
 
