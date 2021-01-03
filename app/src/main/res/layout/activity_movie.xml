@@ -127,32 +127,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
             app:toggle_horizontalSpacing="@dimen/margin5"
             app:toggle_requiredAmount="0"
             app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_principal_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cardview_detail_imageview"
-            app:flexWrap="wrap">
-            <!-- app:justifyContent="flex_start"
-            -->
-
-            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                android:id="@+id/toggle_profile_btn_watchlist"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                app:toggle_textSize="@dimen/text_size_small"
-                app:toggle_text="@string/watchlist"
-                app:toggle_textColor="@color/white"
-                app:toggle_backgroundColor="@color/black"
-                app:toggle_borderWidth = "2dp"
-                app:toggle_selectedBorderWidth = "2dp"
-                app:toggle_borderColor="@color/white"
-                app:toggle_selectedBorderColor = "@color/fireOpal"
-                app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
-
+            app:flexWrap="wrap"
+            app:justifyContent="flex_start">
         </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
-        <!-- https://stackoverflow.com/questions/4946295/android-expand-collapse-animation -->
+        <!-- TODO https://stackoverflow.com/questions/4946295/android-expand-collapse-animation -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -180,7 +165,7 @@
                 android:id="@+id/include_detail_body_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_margin="@dimen/margin"
                 layout="@layout/item_detail_overview_body"
                 app:layout_constraintStart_toStartOf="parent"
@@ -248,7 +233,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin"
-                android:visibility="visible"
+                android:visibility="gone"
                 layout="@layout/item_detail_info_body"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_info_title" />
@@ -311,11 +296,11 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <include
-                android:id="@+id/include_detail_body_overview"
+                android:id="@+id/include_detail_body_related_movies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                layout="@layout/item_detail_overview_body"
+                layout="@layout/item_detail_related_movie_body"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_related_title" />
 

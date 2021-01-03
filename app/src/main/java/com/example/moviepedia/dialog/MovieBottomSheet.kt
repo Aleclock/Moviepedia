@@ -2,6 +2,7 @@ package com.example.moviepedia.dialog
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -154,6 +155,9 @@ open class MovieBottomSheet {
     }
 
     private fun getMovieYear(date: String): String {
-        return date.substring(0,4)
+        return if (date.isEmpty())
+            ""
+        else
+            date.substring(0,4)
     }
 }

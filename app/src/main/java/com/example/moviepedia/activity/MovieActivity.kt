@@ -5,24 +5,26 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.moviepedia.R
+import com.example.moviepedia.adapter.MovieGridHorizontalAdapter
 import com.example.moviepedia.model.GenreTMDB
 import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.tmdb.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.activity_movie.tw_movie_title
+import kotlinx.android.synthetic.main.fragment_discover.recyclerMovies
 import kotlinx.android.synthetic.main.item_detail_info_body.*
 import kotlinx.android.synthetic.main.item_detail_overview_body.*
+import kotlinx.android.synthetic.main.item_detail_related_movie_body.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-import java.security.AccessController.getContext
 import java.text.NumberFormat
 import java.util.*
 
@@ -31,15 +33,18 @@ class MovieActivity : AppCompatActivity() {
 
     val TAG = "MovieActivity"
 
+    private lateinit var similarMoviesAdapter: MovieGridHorizontalAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
 
-        val json_movie = intent.getStringExtra("movie")
-        val movie = Gson().fromJson(json_movie, MovieTMDB::class.java)
+        val jsonMovie = intent.getStringExtra("movie")
+        val movie = Gson().fromJson(jsonMovie, MovieTMDB::class.java)
 
         setBackButton()
         setPrincipalInfo(movie)
+        initSimilarMoviesView(movie)
         MoviesRepository.getMovieDetail(
             movie,
             onSuccess = :: onMovieDetailFetched,
@@ -52,17 +57,11 @@ class MovieActivity : AppCompatActivity() {
             onError = ::onError
         )
 
-        MoviesRepository.getSimilariMovies(
-                movie,
-                onSuccess =  ::onSimilariMovieFetched,
-                onError = ::onError
-        )
-
-        MoviesRepository.getMovieProviders(
+        /*MoviesRepository.getMovieProviders(
                 movie,
                 onSuccess = ::onMovieProvidersFetched,
                 onError = ::onError
-        )
+        )*/
 
         setTabListener()
     }
@@ -79,52 +78,52 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun setDetailedInfo(movieDetail: GetMovieDetailResponse) {
-        tw_movie_runtime.text = "${movieDetail.runtime} min"
+        val na = "N.A."
+        //val na = "•"
+
+        if (movieDetail.runtime != 0)
+            tw_movie_runtime.text = "${movieDetail.runtime} min"
+
         info_row_original_title.text = movieDetail.original_title
         original_language.text = getCountryName(movieDetail.original_language)
-        info_row_budget.text = getCurrencyValue(movieDetail.budget.toString())
-        info_row_revenue.text = getCurrencyValue(movieDetail.revenue.toString())
-        info_row_production_companies.text = movieDetail.production_companies.map { it.name }.joinToString(", ")
+        if (getCurrencyValue(movieDetail.budget.toString()) != getCurrencyValue("0"))
+            info_row_budget.text = getCurrencyValue(movieDetail.budget.toString())
+        else
+            info_row_budget.text = na
+
+        if (getCurrencyValue(movieDetail.revenue.toString()) != getCurrencyValue("0"))
+            info_row_revenue.text = getCurrencyValue(movieDetail.revenue.toString())
+        else
+            info_row_revenue.text = na
+
+        info_row_production_companies.text = movieDetail.production_companies.joinToString(", ") { it.name }
 
     }
 
     // TODO trovare soluzione per dimensione toggle
     private fun setToggleButtons(genres: List<GenreTMDB>) {
+        val borderWidth = 5f
+
         genres.forEach {
             val toggleButton = ThemedButton(window.context)
             toggleButton.text = it.name
+            toggleButton.applyToTexts {text ->
+                text.textSize = 12f
+                text.setViewPadding(all = 20f)
+                text.layoutGravity = Gravity.CENTER_VERTICAL
+            }
 
-            toggleButton.bgColor = resources.getColor(R.color.black)
-            toggleButton.selectedBgColor = resources.getColor(R.color.black)
-            toggleButton.borderColor = resources.getColor(R.color.white)
-            toggleButton.selectedBorderColor = resources.getColor(R.color.white)
-            toggleButton.borderWidth = 5f
-            toggleButton.setPadding(0,0,0,0)
-            toggleButton.selectedBorderWidth = 5f
-            toggleButton.textColor = resources.getColor(R.color.white)
-            toggleButton.applyToTexts { it.textSize = 12f }
-            toggleButton.applyToCards {  RelativeLayout.LayoutParams(MATCH_PARENT, dpToPixels(30f))  }
-            toggleButton.gravity = Gravity.CENTER_VERTICAL
+            toggleButton.borderWidth = borderWidth
+            toggleButton.selectedBorderWidth = borderWidth
+            toggleButton.bgColor = ContextCompat.getColor(window.context, R.color.darkestGray)
+            toggleButton.selectedBgColor = ContextCompat.getColor(window.context, R.color.darkestGray)
+            toggleButton.textColor = ContextCompat.getColor(window.context, R.color.white)
+            toggleButton.borderColor = ContextCompat.getColor(window.context, R.color.darkestGray)
+            toggleButton.selectedBorderColor = ContextCompat.getColor(window.context, R.color.darkestGray)
 
-            /*<nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/toggle_profile_btn_watchlist"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            app:toggle_textSize="@dimen/text_size_small"
-            app:toggle_text="@string/watchlist"
-            app:toggle_textColor="@color/white"
-            app:toggle_backgroundColor="@color/black"
-            app:toggle_borderWidth = "2dp"
-            app:toggle_selectedBorderWidth = "2dp"
-            app:toggle_borderColor="@color/white"
-            app:toggle_selectedBorderColor = "@color/fireOpal"
-            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>*/
-
-            //val params = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             val params = ConstraintLayout.LayoutParams(WRAP_CONTENT, dpToPixels(30f))
             params.setMargins(5,5,5,5)
             item_detail_toggle_group.addView(toggleButton, params)
-            //https://stackoverflow.com/questions/29028168/how-to-pass-attributeset-when-creating-view-programmatically-in-android
         }
     }
 
@@ -134,10 +133,23 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+    private fun initSimilarMoviesView(movie: MovieTMDB) {
+        recyclerMovies.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.HORIZONTAL, false)
+        similarMoviesAdapter = MovieGridHorizontalAdapter(window.context, layoutInflater)
+
+        recyclerMovies.adapter = similarMoviesAdapter
+
+        MoviesRepository.getSimilariMovies(
+                movie,
+                onSuccess =  ::onSimilariMovieFetched,
+                onError = ::onError
+        )
+    }
+
     private fun onMovieDetailFetched(detail: GetMovieDetailResponse) {
         setToggleButtons(detail.genres)
         setDetailedInfo(detail)
-        Log.d(TAG, "Movie detail " + detail.toString())
+        Log.d(TAG, "Movie detail $detail")
 
 
         // TODO aggiornare tabella info
@@ -150,16 +162,16 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun onMovieCreditsFetched(credits: GetMovieCreditsResponse) {
-        Log.d(TAG, "Movie credits " + credits.toString())
+        Log.d(TAG, "Movie credits $credits")
         // TODO aggiornare crew layout e inserire director
     }
 
     private fun onSimilariMovieFetched(movies: List<MovieTMDB>) {
-        Log.d(TAG, "Similar movies: " + movies)
+        Log.d(TAG, "Similar movies: $movies")
         if (movies.isEmpty()) {
-            // TODO scrivere messaggio "Non ci sono film simili"
+            tv_item_detail_similari_movies_error.visibility = View.VISIBLE
         } else {
-            // update horizontal view
+            similarMoviesAdapter.updateMovies(movies)
         }
     }
 
@@ -177,7 +189,7 @@ class MovieActivity : AppCompatActivity() {
         tw_item_detail_stats_title.setOnClickListener { setVisibility(include_detail_body_stats)}
         tw_item_detail_info_title.setOnClickListener { setVisibility(include_detail_body_info) }
         tw_item_detail_cast_title.setOnClickListener {}
-        tw_item_detail_related_title.setOnClickListener {}
+        tw_item_detail_related_title.setOnClickListener { setVisibility(include_detail_body_related_movies)}
     }
 
     private fun setVisibility(v: View) {
@@ -194,8 +206,7 @@ class MovieActivity : AppCompatActivity() {
     private fun dpToPixels(dp: Float): Int {
         val metrics: DisplayMetrics = resources.displayMetrics
         val fpixels = metrics.density * dp
-        val pixel = (fpixels + 0.5f).toInt()
-        return pixel
+        return (fpixels + 0.5f).toInt()
     }
 
     private fun getCurrencyValue(value: String): String {
@@ -204,4 +215,37 @@ class MovieActivity : AppCompatActivity() {
         format.currency = Currency.getInstance("USD")
         return format.format(value.toInt())
     }
+
+
+
+
+    // extension function for padding
+    private fun View.setViewPadding(
+            left: Float? = null, top: Float? = null,
+            right: Float? = null, bottom: Float? = null,
+            horizontal: Float? = null, vertical: Float? = null,
+            all: Float? = null
+    ) {
+        if (listOfNotNull(left, top, right, bottom, horizontal, vertical, all).any { it < 0f }) return
+        all?.let { setPadding(it.toInt(), it.toInt(), it.toInt(), it.toInt()) }
+        horizontal?.let { setPadding(paddingLeft, it.toInt(), paddingRight, it.toInt()) }
+        vertical?.let { setPadding(it.toInt(), paddingTop, it.toInt(), paddingBottom) }
+        setPadding(
+                left?.toInt() ?: paddingLeft,
+                top?.toInt() ?: paddingTop,
+                right?.toInt() ?: paddingRight,
+                bottom?.toInt() ?: paddingBottom
+        )
+    }
+
+    // extension property for layout gravity
+    private var View.layoutGravity
+        get() = (layoutParams as FrameLayout.LayoutParams).gravity
+        set(value) {
+            layoutParams = FrameLayout.LayoutParams(
+                    layoutParams.width,
+                    layoutParams.height,
+                    value
+            )
+        }
 }
