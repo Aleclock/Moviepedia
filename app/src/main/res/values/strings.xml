@@ -31,7 +31,8 @@
     <string name="add_watchlist">Add to watchlist</string>
     <string name="review_log">Review or log</string>
     <string name="add_to_list">Add to a list</string>
-    <string name="go_to_film">Go to film</string>
+    <string name="go_to_film">Go to movie</string>
+    <string name="go_to_tvshow">Go to TV show</string>
     <string name="overview">Overview</string>
     <string name="info">Info</string>
     <string name="cast">Cast</string>

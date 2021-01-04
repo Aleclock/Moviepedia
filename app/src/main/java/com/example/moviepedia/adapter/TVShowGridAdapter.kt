@@ -9,11 +9,12 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.TVShowActivity
+import com.example.moviepedia.dialog.TVShowBottomSheet
 import com.example.moviepedia.model.TVShowTMDB
 
-class TVShowGridAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TVShowGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var listOfTVShows = listOf<TVShowTMDB>()
+    private var listOfTVShows = listOf<TVShowTMDB>()
     private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,8 +36,7 @@ class TVShowGridAdapter(val context: Context) : RecyclerView.Adapter<RecyclerVie
         }
 
         holder.itemView.setOnLongClickListener {
-            // TODO watched, log or review
-            Log.d(TAG, "long click $listOfTVShows[position].toString()")
+            TVShowBottomSheet().createDialog(context, listOfTVShows[position], layoutInflater)
             true
         }
 

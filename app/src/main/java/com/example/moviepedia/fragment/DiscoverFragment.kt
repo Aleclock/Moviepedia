@@ -62,10 +62,9 @@ class DiscoverFragment : Fragment() {
 
     private fun initPopularTVShowView() {
         recyclerMovies.layoutManager = GridLayoutManager(context, 3)
-        popularTVShowAdapter = context?.let { TVShowGridAdapter(it) }!!
+        popularTVShowAdapter = context?.let { TVShowGridAdapter(it, layoutInflater) }!!
 
         recyclerMovies.adapter = popularTVShowAdapter
-
         MoviesRepository.getPopularTVShow(
             onSuccess = ::onPopularTVShowsFetched,
             onError = ::onError
