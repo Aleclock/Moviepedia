@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_black_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Moviepedia">
+        android:theme="@style/Theme.Moviepedia"
+        android:windowSoftInputMode="adjustResize">
         <activity android:name=".activity.TVShowActivity"></activity>
         <activity android:name=".activity.MovieActivity" />
         <activity android:name=".activity.ProfileActivity" />

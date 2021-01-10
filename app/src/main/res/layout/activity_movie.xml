@@ -73,7 +73,7 @@
                 android:textSize="@dimen/text_size_big"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:gravity="start"
+                android:gravity="start|center_vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -151,11 +151,12 @@
             <TextView
                 android:id="@+id/tw_item_detail_overview_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/overview"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
+                android:gravity="start|center_vertical"
                 android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -185,11 +186,12 @@
             <TextView
                 android:id="@+id/tw_item_detail_stats_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/insights"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
+                android:gravity="start|center_vertical"
                 android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -218,11 +220,12 @@
             <TextView
                 android:id="@+id/tw_item_detail_info_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/info"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
+                android:gravity="start|center_vertical"
                 android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -252,11 +255,12 @@
             <TextView
                 android:id="@+id/tw_item_detail_cast_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/cast"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
+                android:gravity="start|center_vertical"
                 android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -285,11 +289,12 @@
             <TextView
                 android:id="@+id/tw_item_detail_related_title"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/related_movies"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
+                android:gravity="start|center_vertical"
                 android:layout_marginBottom="@dimen/margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

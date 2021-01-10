@@ -6,8 +6,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.SearchFragment">
 
+    <EditText
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_search_box"
+        android:layout_margin="@dimen/margin"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:padding="10dp"
+        android:gravity="start|center_vertical"
+        android:hint="@string/search"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- TODO aggiungere due toggle (Movie or Tv show)-->
+
+    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+        android:id="@+id/toggle_group_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginStart="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/toggle_search_btn_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:toggle_textSize="@dimen/text_size_small"
+            app:toggle_text="@string/movie"
+            app:toggle_textColor="@color/white"
+            app:toggle_backgroundColor="@color/black"
+            app:toggle_borderWidth = "2dp"
+            app:toggle_selectedBorderWidth = "2dp"
+            app:toggle_borderColor="@color/white"
+            app:toggle_selectedBorderColor = "@color/fireOpal"
+            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/toggle_search_btn_tvshow"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:toggle_textSize="@dimen/text_size_small"
+            app:toggle_text="@string/tvshow"
+            app:toggle_textColor="@color/white"
+            app:toggle_backgroundColor="@color/black"
+            app:toggle_borderWidth = "2dp"
+            app:toggle_selectedBorderWidth = "2dp"
+            app:toggle_borderColor="@color/white"
+            app:toggle_selectedBorderColor = "@color/fireOpal"
+            app:toggle_selectedBackgroundColor = "@color/fireOpal"/>
+
+    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        app:layout_constraintTop_toBottomOf="@+id/toggle_group_search"
+        app:layout_constraintStart_toStartOf="parent"/>
     <!-- TODO aggiungere recyclerview per mostrare risultati-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

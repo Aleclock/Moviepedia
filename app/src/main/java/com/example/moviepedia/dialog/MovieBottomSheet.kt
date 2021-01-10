@@ -2,7 +2,6 @@ package com.example.moviepedia.dialog
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -99,7 +98,7 @@ open class MovieBottomSheet {
                 }
                 R.id.toggle_sheet_btn_movie_watched -> {
                     if (button.isSelected) {
-                        firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie)
+                        firestoreUtils.addMovieToWatched(LoginActivity.getUser(), movie, "movie", null, null, null)
                         firestoreUtils.updateUserStats("movies")
                         manageSeekbar(mBottomSheetDialog, movie.id, null)
                     } else {

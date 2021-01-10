@@ -1,6 +1,7 @@
 package com.example.moviepedia.model
 
 import com.google.firebase.Timestamp
+import java.util.*
 
 data class WatchedItem (
         val id: Long = -1,
@@ -9,5 +10,5 @@ data class WatchedItem (
         val review: String? = null,
         val addDate: Timestamp? = null,
         val item: FirestoreItem? = null,
-        val watchedDate: String? = null
+        val watchedDate: Date? = null
 )

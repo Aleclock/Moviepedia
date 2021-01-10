@@ -46,4 +46,6 @@
     <string name="no_movies_found">No movies found</string>
     <string name="no_cast_found">No cast found</string>
     <string name="date">Date:</string>
+    <string name="writeReview">Write your review...</string>
+    <string name="saveReview">Save review</string>
 </resources>

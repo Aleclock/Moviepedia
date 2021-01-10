@@ -83,9 +83,9 @@ open class FirestoreUtils {
     Before adding Movie to Firestore check if the movie is already present. In this way the watchedItem is not overwritten
     (solved rating, review and watchedDate problems)
      */
-    fun addMovieToWatched(userID: FirebaseUser, movie: MovieTMDB) {
+    fun addMovieToWatched(userID: FirebaseUser, movie: MovieTMDB, type: String, rating: Int?, review: String?, watchedDate: Date?) {
         val firestoreItem = FirestoreItem().movieToFirestoreItem(movie)
-        val watchedItem = WatchedItem(movie.id,"movie", null, null, Timestamp(Date()),firestoreItem,null)
+        val watchedItem = WatchedItem(movie.id,"movie", rating, review, Timestamp(Date()),firestoreItem, watchedDate)
 
         isInWatched(LoginActivity.getUser(), movie, object : FirestorePresenceCallback {
             override fun onCallback(value: MutableMap<String, Any?>) {
