@@ -65,11 +65,11 @@
     </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/margin"
-        app:layout_constraintTop_toBottomOf="@+id/toggle_group_search"
+        app:layout_constraintTop_toBottomOf="@id/toggle_group_search"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-    <!-- TODO aggiungere recyclerview per mostrare risultati-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

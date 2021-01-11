@@ -5,16 +5,25 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviepedia.R
+import com.example.moviepedia.adapter.ItemGridAdapter
+import com.example.moviepedia.adapter.MovieGridAdapter
+import com.example.moviepedia.adapter.TVShowGridAdapter
+import com.example.moviepedia.model.MovieTMDB
+import com.example.moviepedia.tmdb.MoviesRepository
+import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+import java.util.*
 
 class SearchFragment : Fragment() {
     val TAG = "SearchFragment"
 
     lateinit var queryString : String
     lateinit var queryType : String
+    private lateinit var itemAdapter: ItemGridAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initRecylerView()
         initToggleGroup()
         initSearchView()
     }
@@ -42,7 +52,32 @@ class SearchFragment : Fragment() {
 
         toggle_group_search.setOnSelectListener { button: ThemedButton ->
             queryType = button.text
+            if (queryString != "") {
+                when (queryType) {
+                    "Movie" -> {
+                        MoviesRepository.searchMovie(
+                                query = queryString,
+                                onSuccess = ::onItemsFetched,
+                                onError = ::onError
+                        )
+                    }
+
+                    "TV shows" -> {
+                        MoviesRepository.searchTVShow(
+                                query = queryString,
+                                onSuccess = ::onItemsFetched,
+                                onError = ::onError
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    private fun initRecylerView() {
+        recycler_search.layoutManager = GridLayoutManager(context, 3)
+        itemAdapter = context?.let { ItemGridAdapter(it, layoutInflater) }!!
+        recycler_search.adapter = itemAdapter
     }
 
     private fun initSearchView() {
@@ -54,10 +89,34 @@ class SearchFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // TODO make research
-            }
+                queryString = s.toString()
+                when (queryType) {
+                    "Movie" -> {
+                        MoviesRepository.searchMovie(
+                                query = s.toString(),
+                                onSuccess = ::onItemsFetched,
+                                onError = ::onError
+                        )
+                    }
 
+                    "TV shows" -> {
+                        MoviesRepository.searchTVShow(
+                                query = s.toString(),
+                                onSuccess = ::onItemsFetched,
+                                onError = ::onError
+                        )
+                    }
+                }
+            }
         })
+    }
+
+    private fun onItemsFetched(items: List<Any>) {
+        itemAdapter.updateItems(items)
+    }
+
+    private fun onError() {
+        Log.e(TAG, "Errore")
     }
 
 }

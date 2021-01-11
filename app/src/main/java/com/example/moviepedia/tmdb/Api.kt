@@ -78,4 +78,20 @@ interface Api {
         @Path("movie_id") movie_id: Int,
         @Query("api_key") apiKey: String = TMDB_key
     ): Call<GetMovieProvidersResponse>
+
+    @GET("search/movie")
+    fun searchMovie(
+        @Query("language") language: String,
+        @Query("query") query: String,
+        @Query("api_key") apiKey: String = TMDB_key,
+        @Query("page") page: Int
+    ): Call<GetMoviesResponse>
+
+    @GET("search/tv")
+    fun searchTVShow(
+        @Query("language") language: String,
+        @Query("query") query: String,
+        @Query("api_key") apiKey: String = TMDB_key,
+        @Query("page") page: Int
+    ): Call<GetTVShowResponse>
 }

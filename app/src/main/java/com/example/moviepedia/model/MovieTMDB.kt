@@ -15,5 +15,6 @@ data class MovieTMDB (
     @SerializedName("original_language") val original_language: String,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("vote_count") val vote_count: Int,
+    @SerializedName("video") val video: Boolean,
     @SerializedName("adult") val adult: Boolean
 )
