@@ -199,6 +199,24 @@ open class FirestoreUtils {
             }
     }
 
+    fun getDiaryItems(firestoreWatchedItemsCallback: FirestoreWatchedItemsCallback) {
+        val docRef = db.collection("movies").document(LoginActivity.getUID())
+                .collection("watched")
+                .whereNotEqualTo("watchedDate", null)
+                .orderBy("watchedDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
+        docRef.get()
+                .addOnSuccessListener { documents ->
+                    val itemList =  mutableListOf<WatchedItem>()
+                    for (doc in documents) {
+                        itemList.add(doc.toObject(WatchedItem::class.java))
+                    }
+                    firestoreWatchedItemsCallback.onCallabck(itemList)
+                }
+                .addOnFailureListener {exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                }
+    }
+
     fun isInWatchlist(userID: FirebaseUser, movie: MovieTMDB, firestorePresenceCallback: FirestorePresenceCallback){
         val item: MutableMap<String, Any?> = HashMap()
 

@@ -14,6 +14,7 @@ import com.example.moviepedia.R
 import com.example.moviepedia.activity.ProfileActivity
 import com.example.moviepedia.activity.SettingsActivity
 import com.example.moviepedia.activity.StatsActivity
+import com.example.moviepedia.adapter.DiaryItemGridAdapter
 import com.example.moviepedia.adapter.FirestoreItemGridAdapter
 import com.example.moviepedia.db.FirestoreUtils
 import com.example.moviepedia.model.WatchedItem
@@ -83,7 +84,7 @@ class ProfileFragment : Fragment() {
                     initWatchedView()
                 }
                 R.id.toggle_profile_btn_diary -> {
-                    Log.d(TAG, "Diary")
+                    initDiaryView()
                 }
                 R.id.toggle_profile_btn_list -> {
                     Log.d(TAG, "Lists")
@@ -116,6 +117,22 @@ class ProfileFragment : Fragment() {
                 itemAdapter.updateItems(items)
             }
 
+        })
+    }
+
+    private fun initDiaryView() {
+        recycler_profile.layoutManager = GridLayoutManager(context, 1)
+        val itemAdapter = context?.let { DiaryItemGridAdapter(it, layoutInflater) }!!
+        recycler_profile.adapter = itemAdapter
+
+        FirestoreUtils().getDiaryItems(object : FirestoreUtils.FirestoreWatchedItemsCallback {
+            override fun onCallabck(list: MutableList<WatchedItem>) {
+                //val items = list.map {it.item!!}
+                itemAdapter.updateItems(list)
+                for (item in list) {
+                    Log.d(TAG, item.watchedDate.toString() + " , " + item.item!!.title)
+                }
+            }
         })
     }
 
