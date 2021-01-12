@@ -7,11 +7,12 @@
 
     <TextView
         android:id="@+id/tw_diary_date"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_20"
         android:gravity="center"
+        app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -29,7 +30,7 @@
 
         <ImageView
             android:id="@+id/imageViewItem_diary"
-            android:layout_width="40dp"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,11 +50,38 @@
 
         <TextView
             android:id="@+id/tw_diary_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tw_diary_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_20"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_diary_review"
+            android:layout_width="@dimen/text_size_small"
+            android:layout_height="@dimen/text_size_small"
+            android:visibility="invisible"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_margin="30dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginEnd="@dimen/margin5"
+            android:background="@null"
+            android:src="@drawable/ic_review"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tw_diary_rating"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

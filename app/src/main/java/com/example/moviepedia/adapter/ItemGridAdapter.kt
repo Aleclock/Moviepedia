@@ -2,6 +2,7 @@ package com.example.moviepedia.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -21,7 +22,7 @@ class ItemGridAdapter (val context: Context, private val layoutInflater: LayoutI
     private val TAG = "MovieGridAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ItemGridViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_grid_item_diary,parent, false))
+        return ItemGridViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_grid_item,parent, false))
     }
 
     override fun getItemCount(): Int {

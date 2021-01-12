@@ -170,7 +170,10 @@ open class FirestoreUtils {
     }
 
     fun getWatchlistItems(firestoreWatchlistItemsCallback: FirestoreWatchlistItemsCallback) {
-        val docRef = db.collection("movies").document(LoginActivity.getUID()).collection("watchlist")
+        val docRef = db.collection("movies")
+            .document(LoginActivity.getUID())
+            .collection("watchlist")
+            .orderBy("addDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
         docRef.get()
                 .addOnSuccessListener { documents ->
                     val itemList =  mutableListOf<WatchlistItem>()
@@ -185,7 +188,10 @@ open class FirestoreUtils {
     }
 
     fun getWatchedItems(firestoreWatchedItemsCallback: FirestoreWatchedItemsCallback) {
-        val docRef = db.collection("movies").document(LoginActivity.getUID()).collection("watched")
+        val docRef = db.collection("movies")
+            .document(LoginActivity.getUID())
+            .collection("watched")
+            .orderBy("addDate", com.google.firebase.firestore.Query.Direction.DESCENDING)
         docRef.get()
             .addOnSuccessListener { documents ->
                 val itemList =  mutableListOf<WatchedItem>()
