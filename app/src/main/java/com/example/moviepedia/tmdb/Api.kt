@@ -1,6 +1,7 @@
 package com.example.moviepedia.tmdb
 
 import com.example.moviepedia.BuildConfig.TMDB_key
+import com.example.moviepedia.model.GetTVSeasonsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -52,6 +53,19 @@ interface Api {
         @Path("movie_id") movie_id : Int,
         @Query("api_key") apiKey: String = TMDB_key
     ): Call<GetMovieDetailResponse>
+
+    @GET("tv/{tv_id}")
+    fun getTVShowDetail(
+        @Path("tv_id") tv_id : Int,
+        @Query("api_key") apiKey: String = TMDB_key
+    ): Call<GetTVShowDetailResponse>
+
+    @GET("tv/{tv_id}/season/{season_number}")
+    fun getTVSeasons(
+        @Path("tv_id") tv_id: Int,
+        @Path("season_number") season_number: Int,
+        @Query("api_key") apiKey: String = TMDB_key
+    ): Call<GetTVSeasonsResponse>
 
     @GET("movie/{movie_id}/credits")
     fun getMovieCredits(

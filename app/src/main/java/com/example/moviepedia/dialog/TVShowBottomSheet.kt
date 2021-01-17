@@ -27,7 +27,7 @@ open class TVShowBottomSheet {
         //TODO manageToggle(mBottomSheetDialog, movie)
     }
 
-    private fun manageButtons(context: Context, mBottomSheetDialog: RoundedBottomSheetDialog, movie: TVShowTMDB) {
+    private fun manageButtons(context: Context, mBottomSheetDialog: RoundedBottomSheetDialog, tvshow: TVShowTMDB) {
 
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_tvshow_review_log)!!.setOnClickListener {
             //val intent = Intent(context, SettingsActivity::class.java)
@@ -41,7 +41,7 @@ open class TVShowBottomSheet {
 
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_go_to_tvshow)!!.setOnClickListener {
             val intent = Intent(context, TVShowActivity::class.java)
-            intent.putExtra("tvshow", Gson().toJson(movie))
+            intent.putExtra("tvshow", Gson().toJson(tvshow))
             ContextCompat.startActivity(context, intent, null)
             mBottomSheetDialog.dismiss()
         }

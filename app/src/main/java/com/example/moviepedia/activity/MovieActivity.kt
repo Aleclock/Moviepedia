@@ -99,7 +99,6 @@ class MovieActivity : AppCompatActivity() {
 
     }
 
-    // TODO trovare soluzione per dimensione toggle
     private fun setToggleButtons(genres: List<GenreTMDB>) {
         val borderWidth = 5f
 

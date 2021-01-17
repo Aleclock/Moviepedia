@@ -5,12 +5,14 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
 import com.example.moviepedia.activity.TVShowActivity
 import com.example.moviepedia.dialog.TVShowBottomSheet
 import com.example.moviepedia.model.TVShowTMDB
+import com.google.gson.Gson
 
 class TVShowGridAdapter(val context: Context, private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -30,9 +32,8 @@ class TVShowGridAdapter(val context: Context, private val layoutInflater: Layout
 
         holder.itemView.setOnClickListener{
             val intent = Intent(context, TVShowActivity::class.java)
-            startActivity(context,intent,null)
-
-            Log.d(TAG, listOfTVShows[position].toString())
+            intent.putExtra("tvshow", Gson().toJson(listOfTVShows[position]))
+            startActivity(context, intent, null)
         }
 
         holder.itemView.setOnLongClickListener {

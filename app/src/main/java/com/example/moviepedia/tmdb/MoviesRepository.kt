@@ -1,5 +1,6 @@
 package com.example.moviepedia.tmdb
 
+import com.example.moviepedia.model.GetTVSeasonsResponse
 import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.model.TVShowTMDB
 import retrofit2.Call
@@ -18,6 +19,61 @@ object MoviesRepository {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/") .addConverterFactory(GsonConverterFactory.create()) .build()
         api = retrofit.create(Api::class.java) }
+
+    fun getTVSeasons(
+            tv_id: Int,
+            season_number: Int,
+            onSuccess: (response: GetTVSeasonsResponse) -> Unit,
+            onError: () -> Unit
+    ) {
+        api.getTVSeasons(tv_id = tv_id, season_number = season_number)
+            .enqueue(object : Callback<GetTVSeasonsResponse> {
+                override fun onResponse(call: Call<GetTVSeasonsResponse>, response: Response<GetTVSeasonsResponse>) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetTVSeasonsResponse>, t: Throwable) {
+                    onError.invoke()
+                }
+            })
+    }
+
+    fun getTVShowDetail(
+        tvshow: TVShowTMDB,
+        onSuccess: (response: GetTVShowDetailResponse) -> Unit,
+        onError: () -> Unit
+    ) {
+        api.getTVShowDetail(tv_id = tvshow.id.toInt())
+            .enqueue(object : Callback<GetTVShowDetailResponse> {
+                override fun onResponse(call: Call<GetTVShowDetailResponse>, response: Response<GetTVShowDetailResponse>) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetTVShowDetailResponse>, t: Throwable) {
+                    onError.invoke()
+                }
+            })
+    }
 
     fun getMovieDetail(
         movie: MovieTMDB,

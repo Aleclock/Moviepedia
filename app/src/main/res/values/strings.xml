@@ -48,4 +48,7 @@
     <string name="date">Date:</string>
     <string name="writeReview">Write your review...</string>
     <string name="saveReview">Save review</string>
+    <string name="seasons">Seasons</string>
+    <string name="in_production">In production</string>
+    <string name="episodes">Episodes</string>
 </resources>

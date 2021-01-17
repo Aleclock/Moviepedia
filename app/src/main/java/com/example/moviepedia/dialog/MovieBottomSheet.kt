@@ -39,9 +39,6 @@ open class MovieBottomSheet {
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_review_log)!!.setOnClickListener {
             mBottomSheetDialog.dismiss()
             ItemLogBottomSheet().createDialog(context, movie, LayoutInflater.from(context))
-            //val intent = Intent(context, SettingsActivity::class.java)
-            //intent.putExtra()
-            //startActivity(intent)
         }
 
         mBottomSheetDialog.findViewById<TextView>(R.id.tw_add_to_list)!!.setOnClickListener {
