@@ -96,23 +96,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tw_tvshow_director_title"
-            android:text="@string/directed_by"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/gray"
-            app:layout_constraintTop_toBottomOf="@+id/tw_tvshow_resease_date"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tw_tvshow_director"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/gray"
             android:layout_marginStart="@dimen/margin"
             app:layout_constraintTop_toBottomOf="@+id/tw_tvshow_resease_date"
-            app:layout_constraintStart_toEndOf="@+id/tw_tvshow_director_title" />
+            app:layout_constraintStart_toEndOf="@+id/tw_tvshow_runtime" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
