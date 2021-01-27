@@ -96,7 +96,6 @@ class MovieActivity : AppCompatActivity() {
       info_row_revenue.text = na
 
     info_row_production_companies.text = movieDetail.production_companies.joinToString(", ") { it.name }
-
   }
 
   private fun setToggleButtons(genres: List<GenreTMDB>) {
@@ -160,7 +159,6 @@ class MovieActivity : AppCompatActivity() {
   private fun onMovieDetailFetched(detail: GetMovieDetailResponse) {
     setToggleButtons(detail.genres)
     setDetailedInfo(detail)
-    //Log.d(TAG, "Movie detail $detail")
   }
 
   private fun onMovieProvidersFetched(providers: GetMovieProvidersResponse) {

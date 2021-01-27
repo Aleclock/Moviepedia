@@ -120,30 +120,52 @@
         app:justifyContent="flex_start">
     </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cl_item_detail_season_info"
+        android:id="@+id/cl_item_detail_episodes"
+        android:background="@drawable/custom_stroke_top_layout"
+        android:layout_marginTop="@dimen/margin32"
+        android:layout_marginStart="@dimen/margin5"
+        android:layout_marginEnd="@dimen/margin5"
         app:layout_constraintTop_toBottomOf="@+id/item_detail_toggle_group"
         app:layout_constraintStart_toStartOf="parent">
 
-        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-            android:id="@+id/item_detail_toggle_group_seasons"
+        <TextView
+            android:id="@+id/tw_item_detail_episodes_title"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginStart="@dimen/margin"
-            app:toggle_horizontalSpacing="@dimen/margin5"
-            app:toggle_requiredAmount="0"
+            android:layout_height="40dp"
+            android:text="@string/episodes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_big"
+            android:textStyle="bold"
+            android:gravity="start|center_vertical"
+            android:layout_marginBottom="@dimen/margin"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:flexWrap="wrap"
-            app:justifyContent="flex_start">
-        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+            app:layout_constraintEnd_toStartOf="@+id/tw_item_detail_episodes_seasons"/>
 
-        <!-- TODO add recycler view episodes-->
+        <TextView
+            android:id="@+id/tw_item_detail_episodes_seasons"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20"
+            android:gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/margin32"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tw_item_detail_episodes_title"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <include
+            android:id="@+id/include_detail_episodes_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin"
+            layout="@layout/item_detail_episodes_body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tw_item_detail_episodes_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -152,10 +174,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/cl_item_detail_overview"
         android:background="@drawable/custom_stroke_top_layout"
-        android:layout_marginTop="@dimen/margin32"
         android:layout_marginStart="@dimen/margin5"
         android:layout_marginEnd="@dimen/margin5"
-        app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_season_info"
+        app:layout_constraintTop_toBottomOf="@+id/cl_item_detail_episodes"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -300,7 +321,7 @@
             android:id="@+id/tw_item_detail_related_title"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="@string/related_movies"
+            android:text="@string/related_tvshow"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_big"
             android:textStyle="bold"

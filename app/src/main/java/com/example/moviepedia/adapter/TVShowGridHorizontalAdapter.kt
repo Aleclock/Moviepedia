@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviepedia.R
-import com.example.moviepedia.activity.MovieActivity
 import com.example.moviepedia.activity.TVShowActivity
 import com.example.moviepedia.dialog.TVShowBottomSheet
 import com.example.moviepedia.model.TVShowTMDB
@@ -45,5 +44,4 @@ class TVShowGridHorizontalAdapter(val context: Context, private val layoutInflat
     this.listOfTVShow = tvShow
     notifyDataSetChanged()
   }
-
 }

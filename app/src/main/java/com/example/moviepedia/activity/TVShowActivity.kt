@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.bumptech.glide.Glide
 import com.example.moviepedia.R
 import com.example.moviepedia.adapter.CastGridHorizontalAdapter
-import com.example.moviepedia.adapter.MovieGridHorizontalAdapter
+import com.example.moviepedia.adapter.EpisodesAdapter
 import com.example.moviepedia.adapter.TVShowGridHorizontalAdapter
 import com.example.moviepedia.model.*
 import com.example.moviepedia.tmdb.*
+import com.example.moviepedia.utils.SwipeEpisodeController
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_tv_show.item_detail_btn_back
 import kotlinx.android.synthetic.main.activity_tv_show.item_detail_toggle_group
@@ -33,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_tv_show.tw_item_detail_overview_t
 import kotlinx.android.synthetic.main.activity_tv_show.tw_item_detail_related_title
 import kotlinx.android.synthetic.main.activity_tv_show.tw_item_detail_stats_title
 import kotlinx.android.synthetic.main.item_detail_cast_body.*
+import kotlinx.android.synthetic.main.item_detail_episodes_body.*
 import kotlinx.android.synthetic.main.item_detail_info_body.info_row_original_title
 import kotlinx.android.synthetic.main.item_detail_info_body.info_row_production_companies
 import kotlinx.android.synthetic.main.item_detail_info_body.original_language
@@ -47,6 +50,8 @@ class TVShowActivity : AppCompatActivity() {
   val TAG = "TVShowActivity__"
   private lateinit var castTVShowAdapter: CastGridHorizontalAdapter
   private lateinit var similarTVShowAdapter: TVShowGridHorizontalAdapter
+  lateinit var episodesAdapter: EpisodesAdapter
+  lateinit var swipeEpisodedController : SwipeEpisodeController
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -110,11 +115,10 @@ class TVShowActivity : AppCompatActivity() {
     setToggleGenresButtons(detail.genres)
     setToggleSeasonsButtons(detail.id, detail.seasons)
     setDetailedInfo(detail)
-    Log.d(TAG, "Movie detail $detail")
   }
 
   private fun onTvSeasonFetched(season : GetTVSeasonsResponse) {
-    Log.d(TAG, season.toString())
+    episodesAdapter.updateEpisodes(season.episodes)
   }
 
   private fun onError() {
@@ -142,6 +146,8 @@ class TVShowActivity : AppCompatActivity() {
       toggleButton.borderColor = ContextCompat.getColor(window.context, R.color.white)
       toggleButton.selectedBorderColor = ContextCompat.getColor(window.context, R.color.fireOpal)
 
+      initEpisodesRecyclerView()
+
       toggleButton.setOnClickListener {
         MoviesRepository.getTVSeasons(
           tv_id,
@@ -155,6 +161,22 @@ class TVShowActivity : AppCompatActivity() {
       params.setMargins(5,5,5,5)
       item_detail_toggle_group_seasons.addView(toggleButton, params)
     }
+  }
+
+  fun onSelectedItem (pos : Int) {
+    val episode = episodesAdapter.listOfEpisodes[pos]
+    // TODO salvare episode come watched
+  }
+
+  // TODO forse devo cambiare qui la prima riga
+  private fun initEpisodesRecyclerView() {
+    recycler_item_detail_episodes.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.VERTICAL, false)
+    episodesAdapter = EpisodesAdapter(window.context, layoutInflater)
+    recycler_item_detail_episodes.adapter = episodesAdapter
+
+    swipeEpisodedController = SwipeEpisodeController(episodesAdapter, this)
+    val itemTouchHelper = ItemTouchHelper(swipeEpisodedController)
+    itemTouchHelper.attachToRecyclerView(recycler_item_detail_episodes)
   }
 
   private fun setToggleGenresButtons(genres: List<GenreTMDB>) {
@@ -186,7 +208,7 @@ class TVShowActivity : AppCompatActivity() {
   private fun setDetailedInfo(detail: GetTVShowDetailResponse) {
     val runtime = detail.episode_run_time.average()
     if (runtime.toFloat() != 0f)
-      tw_tvshow_runtime.text = "${runtime} min"
+      tw_tvshow_runtime.text = "${runtime.toInt()} min"
 
     info_row_original_title.text = detail.original_name
     original_language.text = getCountryName(detail.original_language)
@@ -194,6 +216,8 @@ class TVShowActivity : AppCompatActivity() {
     info_row_seasons.text = detail.number_of_seasons.toString()
     info_row_episodes.text = detail.number_of_episodes.toString()
     info_row_in_production.text = detail.in_production.toString()
+
+    tw_item_detail_episodes_seasons.text = detail.number_of_seasons.toString()
 
     info_row_production_companies.text = detail.production_companies.joinToString(", ") { it.name }
 
@@ -207,6 +231,7 @@ class TVShowActivity : AppCompatActivity() {
   }
 
   private fun setTabListener() {
+    tw_item_detail_episodes_title.setOnClickListener { setVisibility(include_detail_episodes_overview) }
     tw_item_detail_overview_title.setOnClickListener { setVisibility(include_detail_body_overview)}
     tw_item_detail_stats_title.setOnClickListener { setVisibility(include_detail_body_stats)}
     tw_item_detail_info_title.setOnClickListener { setVisibility(include_detail_body_info) }

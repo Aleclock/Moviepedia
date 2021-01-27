@@ -157,126 +157,125 @@ object MoviesRepository {
       })
   }
 
-    fun getPopularMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<MovieTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getPopularMovies(page = page)
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                    call: Call<GetMoviesResponse>,
-                    response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+  fun getPopularMovies(
+      page: Int = 1,
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getPopularMovies(page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
 
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.movies)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
 
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
 
-    fun getMovieProviders(
-        movie: MovieTMDB,
-        onSuccess: (response: GetMovieProvidersResponse) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getMovieProviders(movie_id = movie.id.toInt())
-                .enqueue(object : Callback<GetMovieProvidersResponse> {
-                    override fun onFailure(call: Call<GetMovieProvidersResponse>, t: Throwable) {
-                        onError.invoke()
-                    }
+  fun getMovieProviders(
+      movie: MovieTMDB,
+      onSuccess: (response: GetMovieProvidersResponse) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getMovieProviders(movie_id = movie.id.toInt())
+      .enqueue(object : Callback<GetMovieProvidersResponse> {
+        override fun onResponse(
+          call: Call<GetMovieProvidersResponse>,
+          response: Response<GetMovieProvidersResponse>) {
+            if (response.isSuccessful) {
+              val responseBody = response.body()
 
-                    override fun onResponse(
-                            call: Call<GetMovieProvidersResponse>,
-                            response: Response<GetMovieProvidersResponse>) {
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
+              if (responseBody != null) {
+                onSuccess.invoke(responseBody)
+              } else {
+                onError.invoke()
+              }
+            } else {
+              onError.invoke()
+            }
+        }
 
-                            if (responseBody != null) {
-                                onSuccess.invoke(responseBody)
-                            } else {
-                                onError.invoke()
-                            }
-                        } else {
-                            onError.invoke()
-                        }
-                    }
-
-                })
-    }
+        override fun onFailure(call: Call<GetMovieProvidersResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
 
 
-    fun getTopRatedMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<MovieTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getTopRatedMovies(page = page)
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                    call: Call<GetMoviesResponse>,
-                    response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+  fun getTopRatedMovies(
+      page: Int = 1,
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getTopRatedMovies(page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
 
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.movies)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
 
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
 
   fun getRecommendedMovies(
-          movie: MovieTMDB,
-          page: Int = 1,
-          onSuccess: (movies: List<MovieTMDB>) -> Unit,
-          onError: () -> Unit
+    movie: MovieTMDB,
+    page: Int = 1,
+    onSuccess: (movies: List<MovieTMDB>) -> Unit,
+    onError: () -> Unit
   ) {
-      api.getRecommendedMovies(movie_id = movie.id.toInt(), page = page)
-              .enqueue(object : Callback<GetMoviesResponse> {
-                  override fun onResponse(
-                          call: Call<GetMoviesResponse>,
-                          response: Response<GetMoviesResponse>
-                  ) {
-                      if (response.isSuccessful) {
-                          val responseBody = response.body()
+    api.getRecommendedMovies(movie_id = movie.id.toInt(), page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
 
-                          if (responseBody != null) {
-                              onSuccess.invoke(responseBody.movies)
-                          } else {
-                              onError.invoke()
-                          }
-                      } else {
-                          onError.invoke()
-                      }
-                  }
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
 
-                  override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                      onError.invoke()
-                  }
-              })
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
   }
 
   fun getSimilarTVShow(
@@ -306,248 +305,244 @@ object MoviesRepository {
       })
   }
 
-    fun getSimilariMovies(
-            movie: MovieTMDB,
-            page: Int = 1,
-            onSuccess: (movies: List<MovieTMDB>) -> Unit,
-            onError: () -> Unit
+  fun getSimilariMovies(
+      movie: MovieTMDB,
+      page: Int = 1,
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getSimilarMovies(movie_id = movie.id.toInt(), page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
+
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
+
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
+
+  fun getUpcomingMovies(
+      page: Int = 1,
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getUpcomingMovies(page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
+
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+              onError.invoke()
+          }
+        }
+
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
+
+  fun getLatestMovies(
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getLatestMovies()
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
+
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.movies)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
+
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
+
+  fun searchMovie(
+      page: Int = 1,
+      language: String = "en-US",
+      query: String,
+      onSuccess: (movies: List<MovieTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.searchMovie(language = language, query = query, page = page)
+      .enqueue(object : Callback<GetMoviesResponse> {
+        override fun onResponse(
+          call: Call<GetMoviesResponse>,
+          response: Response<GetMoviesResponse>) {
+            if (response.isSuccessful) {
+              val responseBody = response.body()
+
+              if (responseBody != null) {
+                onSuccess.invoke(responseBody.movies)
+              } else {
+                onError.invoke()
+              }
+            } else {
+                onError.invoke()
+            }
+          }
+
+        override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
+
+  fun searchTVShow(
+      page: Int = 1,
+      language: String = "en-US",
+      query: String,
+      onSuccess: (movies: List<TVShowTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.searchTVShow(language = language, query = query, page = page)
+      .enqueue(object : Callback<GetTVShowResponse> {
+        override fun onResponse(
+          call: Call<GetTVShowResponse>,
+          response: Response<GetTVShowResponse>) {
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+
+                if (responseBody != null) {
+                  onSuccess.invoke(responseBody.shows)
+                } else {
+                  onError.invoke()
+                }
+            } else {
+              onError.invoke()
+            }
+          }
+
+        override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
+
+  fun getPopularTVShow(
+      page: Int = 1,
+      onSuccess: (shows: List<TVShowTMDB>) -> Unit,
+      onError: () -> Unit
     ) {
-        api.getSimilarMovies(movie_id = movie.id.toInt(), page = page)
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                        call: Call<GetMoviesResponse>,
-                        response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+      api.getPopularTVShow(page = page)
+        .enqueue(object : Callback<GetTVShowResponse> {
+          override fun onResponse(
+            call: Call<GetTVShowResponse>,
+            response: Response<GetTVShowResponse>
+          ) {
+            if (response.isSuccessful) {
+              val responseBody = response.body()
 
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.movies)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
+              if (responseBody != null) {
+                onSuccess.invoke(responseBody.shows)
+              } else {
+                onError.invoke()
+              }
+            } else {
+              onError.invoke()
+            }
+          }
 
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
+          override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
+            onError.invoke()
+          }
+        })
+  }
 
-    fun getUpcomingMovies(
-        page: Int = 1,
-        onSuccess: (movies: List<MovieTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getUpcomingMovies(page = page)
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                    call: Call<GetMoviesResponse>,
-                    response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+  fun getTopRatedTVShow(
+      page: Int = 1,
+      onSuccess: (shows: List<TVShowTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getTopRatedTVShow(page = page)
+      .enqueue(object : Callback<GetTVShowResponse> {
+        override fun onResponse(
+          call: Call<GetTVShowResponse>,
+          response: Response<GetTVShowResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
 
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.movies)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.shows)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
 
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
+        override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
 
-    fun getLatestMovies(
-        onSuccess: (movies: List<MovieTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getLatestMovies()
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                    call: Call<GetMoviesResponse>,
-                    response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+  fun getLatestTVShow(
+      onSuccess: (shows: List<TVShowTMDB>) -> Unit,
+      onError: () -> Unit
+  ) {
+    api.getLatestTVShow()
+      .enqueue(object : Callback<GetTVShowResponse> {
+        override fun onResponse(
+          call: Call<GetTVShowResponse>,
+          response: Response<GetTVShowResponse>
+        ) {
+          if (response.isSuccessful) {
+            val responseBody = response.body()
 
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.movies)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
+            if (responseBody != null) {
+              onSuccess.invoke(responseBody.shows)
+            } else {
+              onError.invoke()
+            }
+          } else {
+            onError.invoke()
+          }
+        }
 
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
-
-    fun searchMovie(
-            page: Int = 1,
-            language: String = "en-US",
-            query: String,
-            onSuccess: (movies: List<MovieTMDB>) -> Unit,
-            onError: () -> Unit
-    ) {
-        api.searchMovie(language = language, query = query, page = page)
-                .enqueue(object : Callback<GetMoviesResponse> {
-                    override fun onResponse(
-                            call: Call<GetMoviesResponse>,
-                            response: Response<GetMoviesResponse>) {
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-
-                            if (responseBody != null) {
-                                onSuccess.invoke(responseBody.movies)
-                            } else {
-                                onError.invoke()
-                            }
-                        } else {
-                            onError.invoke()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                        onError.invoke()
-                    }
-                })
-    }
-
-    fun searchTVShow(
-            page: Int = 1,
-            language: String = "en-US",
-            query: String,
-            onSuccess: (movies: List<TVShowTMDB>) -> Unit,
-            onError: () -> Unit
-    ) {
-        api.searchTVShow(language = language, query = query, page = page)
-                .enqueue(object : Callback<GetTVShowResponse> {
-                    override fun onResponse(
-                            call: Call<GetTVShowResponse>,
-                            response: Response<GetTVShowResponse>) {
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-
-                            if (responseBody != null) {
-                                onSuccess.invoke(responseBody.shows)
-                            } else {
-                                onError.invoke()
-                            }
-                        } else {
-                            onError.invoke()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
-                        onError.invoke()
-                    }
-                })
-    }
-
-    /**
-     * TV shows functions
-     */
-
-    fun getPopularTVShow(
-        page: Int = 1,
-        onSuccess: (shows: List<TVShowTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getPopularTVShow(page = page)
-            .enqueue(object : Callback<GetTVShowResponse> {
-                override fun onResponse(
-                    call: Call<GetTVShowResponse>,
-                    response: Response<GetTVShowResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.shows)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
-
-                override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
-
-    fun getTopRatedTVShow(
-        page: Int = 1,
-        onSuccess: (shows: List<TVShowTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getTopRatedTVShow(page = page)
-            .enqueue(object : Callback<GetTVShowResponse> {
-                override fun onResponse(
-                    call: Call<GetTVShowResponse>,
-                    response: Response<GetTVShowResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.shows)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
-
-                override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
-
-    fun getLatestTVShow(
-        onSuccess: (shows: List<TVShowTMDB>) -> Unit,
-        onError: () -> Unit
-    ) {
-        api.getLatestTVShow()
-            .enqueue(object : Callback<GetTVShowResponse> {
-                override fun onResponse(
-                    call: Call<GetTVShowResponse>,
-                    response: Response<GetTVShowResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-
-                        if (responseBody != null) {
-                            onSuccess.invoke(responseBody.shows)
-                        } else {
-                            onError.invoke()
-                        }
-                    } else {
-                        onError.invoke()
-                    }
-                }
-
-                override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
-                    onError.invoke()
-                }
-            })
-    }
+        override fun onFailure(call: Call<GetTVShowResponse>, t: Throwable) {
+          onError.invoke()
+        }
+      })
+  }
 }

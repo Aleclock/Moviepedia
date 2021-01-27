@@ -120,6 +120,8 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    // TODO se rating = null non mettere niente
+    // TODO spostare un po' a sinistra e sistemare meglio viewHolder
     private fun initDiaryView() {
         recycler_profile.layoutManager = GridLayoutManager(context, 1)
         val itemAdapter = context?.let { DiaryItemGridAdapter(it, layoutInflater) }!!

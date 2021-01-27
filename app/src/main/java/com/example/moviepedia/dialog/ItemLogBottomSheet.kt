@@ -15,6 +15,7 @@ import com.example.moviepedia.utils.SliderRatingBar
 import com.jaygoo.widget.RangeSeekBar
 import kotlinx.android.synthetic.main.movie_review_bottom_sheet.*
 
+// TODO quando viene inviato il review, è necessario chiamare la funzione che permette di aggiornare le statistiche
 open class ItemLogBottomSheet {
     val TAG = "ItemLogBottomSheet"
 
