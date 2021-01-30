@@ -1,6 +1,5 @@
 package com.example.moviepedia.tmdb
 
-import com.example.moviepedia.model.GetTVSeasonsResponse
 import com.example.moviepedia.model.MovieTMDB
 import com.example.moviepedia.model.TVShowTMDB
 import retrofit2.Call
@@ -21,10 +20,10 @@ object MoviesRepository {
     api = retrofit.create(Api::class.java) }
 
   fun getTVSeasons(
-      tv_id: Int,
-      season_number: Int,
-      onSuccess: (response: GetTVSeasonsResponse) -> Unit,
-      onError: () -> Unit
+    tv_id: Int,
+    season_number: Int,
+    onSuccess: (response: GetTVSeasonsResponse) -> Unit,
+    onError: () -> Unit
   ) {
     api.getTVSeasons(tv_id = tv_id, season_number = season_number)
       .enqueue(object : Callback<GetTVSeasonsResponse> {

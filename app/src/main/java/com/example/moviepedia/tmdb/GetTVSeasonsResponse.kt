@@ -1,5 +1,6 @@
-package com.example.moviepedia.model
+package com.example.moviepedia.tmdb
 
+import com.example.moviepedia.model.EpisodeTMDB
 import com.google.gson.annotations.SerializedName
 
 data class GetTVSeasonsResponse (

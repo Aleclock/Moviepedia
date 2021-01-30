@@ -1,7 +1,6 @@
 package com.example.moviepedia.tmdb
 
 import com.example.moviepedia.BuildConfig.TMDB_key
-import com.example.moviepedia.model.GetTVSeasonsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

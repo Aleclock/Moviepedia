@@ -13,10 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.bumptech.glide.Glide
+import com.example.moviepedia.LoginActivity
 import com.example.moviepedia.R
 import com.example.moviepedia.adapter.CastGridHorizontalAdapter
 import com.example.moviepedia.adapter.EpisodesAdapter
 import com.example.moviepedia.adapter.TVShowGridHorizontalAdapter
+import com.example.moviepedia.db.FirestoreUtils
 import com.example.moviepedia.model.*
 import com.example.moviepedia.tmdb.*
 import com.example.moviepedia.utils.SwipeEpisodeController
@@ -52,13 +54,15 @@ class TVShowActivity : AppCompatActivity() {
   private lateinit var similarTVShowAdapter: TVShowGridHorizontalAdapter
   lateinit var episodesAdapter: EpisodesAdapter
   lateinit var swipeEpisodedController : SwipeEpisodeController
+  lateinit var tvShow : TVShowTMDB
+  lateinit var activeSeason : SeasonsTMDB
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_tv_show)
 
     val jsonTvShow = intent.getStringExtra("tvshow")
-    val tvShow = Gson().fromJson(jsonTvShow, TVShowTMDB::class.java)
+    tvShow = Gson().fromJson(jsonTvShow, TVShowTMDB::class.java)
     setBackButton()
     setPrincipalInfo(tvShow)
 
@@ -129,6 +133,7 @@ class TVShowActivity : AppCompatActivity() {
     val borderWidth = 5f
 
     seasons.forEach {
+      val season = it
       val seasonNumber = it.season_number
       val toggleButton = ThemedButton(window.context)
       toggleButton.text = it.name
@@ -149,12 +154,21 @@ class TVShowActivity : AppCompatActivity() {
       initEpisodesRecyclerView()
 
       toggleButton.setOnClickListener {
+
+        FirestoreUtils().getTVShowEpisodesWatched(LoginActivity.getUser(), tvShow, season, null, object : FirestoreUtils.FirestoreWatchedEpisodeCallback {
+          override fun onCallback(list: MutableList<FirestoreEpisode>) {
+            episodesAdapter.watchedEpisodes(list)
+          }
+        })
+
         MoviesRepository.getTVSeasons(
           tv_id,
           seasonNumber,
           onSuccess = :: onTvSeasonFetched,
           onError = ::onError
         )
+
+        activeSeason = season
       }
 
       val params = ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dpToPixels(30f))
@@ -165,7 +179,7 @@ class TVShowActivity : AppCompatActivity() {
 
   fun onSelectedItem (pos : Int) {
     val episode = episodesAdapter.listOfEpisodes[pos]
-    // TODO salvare episode come watched
+    FirestoreUtils().addTVShowEpisodetoWatched(LoginActivity.getUser(),tvShow, activeSeason, episode)
   }
 
   // TODO forse devo cambiare qui la prima riga
@@ -212,16 +226,11 @@ class TVShowActivity : AppCompatActivity() {
 
     info_row_original_title.text = detail.original_name
     original_language.text = getCountryName(detail.original_language)
-
     info_row_seasons.text = detail.number_of_seasons.toString()
     info_row_episodes.text = detail.number_of_episodes.toString()
     info_row_in_production.text = detail.in_production.toString()
-
     tw_item_detail_episodes_seasons.text = detail.number_of_seasons.toString()
-
     info_row_production_companies.text = detail.production_companies.joinToString(", ") { it.name }
-
-    // TODO aggiornare detail
   }
 
   private fun setBackButton() {

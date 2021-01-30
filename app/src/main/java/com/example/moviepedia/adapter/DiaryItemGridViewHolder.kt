@@ -22,7 +22,9 @@ class DiaryItemGridViewHolder (itemView: View): RecyclerView.ViewHolder (itemVie
 
             itemView.tw_diary_title.text = itemDetail.title
             itemView.tw_diary_date.text = getDayDate(item.watchedDate!!)
-            itemView.tw_diary_rating.text = item.rating.toString()
+
+            if (item.rating != null)
+                itemView.tw_diary_rating.text = item.rating.toString()
 
             if (item.review != "")
                 itemView.btn_diary_review.visibility = View.VISIBLE
