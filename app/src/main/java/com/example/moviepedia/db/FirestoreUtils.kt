@@ -31,6 +31,10 @@ import kotlin.collections.HashMap
  *  - isMovieInWatchlist: given a user and a movie, verify if item is in watchlist collection in db
  *  - isMovieInWatched: given a user and a movie, verify if item is in watched collection in db
  *  - isTVShowInWatched: given a user and a tvshow, verify if item is in watched collection in db
+ *  - removeTVShowEpisodeFromWatched: given user and episode, remove episode from db collection
+ *  - getTVShowWatched: given user and tvshow, return all episode of tvshow already watched
+ *  - TVShowSeasonWatched: given user, tvshow and season, return all tvshow episode watched of a specific season
+ *  - getTVShowEpisodeWatched: given user and specific episode, return specific episode from db
  */
 
 open class FirestoreUtils {
@@ -103,7 +107,7 @@ open class FirestoreUtils {
     })
   }
 
-  fun addTVShowEpisodetoWatched (userID: FirebaseUser, tvShow: TVShowTMDB, seasonsTMDB: SeasonsTMDB, episode: EpisodeTMDB) {
+  fun addTVShowEpisodeToWatched (userID: FirebaseUser, tvShow: TVShowTMDB, seasonsTMDB: SeasonsTMDB, episode: EpisodeTMDB) {
     val firestoreEpisode = FirestoreEpisode().episodeToFirestoreEpisode(tvShow, seasonsTMDB, episode)
     firestoreEpisode.addDate = Timestamp(Date())
 
@@ -114,42 +118,57 @@ open class FirestoreUtils {
       .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
   }
 
-  // TODO valutare se ha senso recuperare tutti gli episodi visti di una stagione, in modo tale da non fare troppe chiamate nel cambio di toggle
-  fun getTVShowEpisodesWatched (
+  fun getTVShowWatched (userID: FirebaseUser, tvShow: TVShowTMDB, firestoreWatchedEpisodeCallback: FirestoreWatchedEpisodeCallback
+  ) {
+    val itemList =  mutableListOf<FirestoreEpisode>()
+    val docRef = db.collection("movies").document(userID.uid).collection("tvshow_episodes")
+      .whereEqualTo("id_tvshow", tvShow.id)
+    docRef.get()
+      .addOnSuccessListener { documents ->
+        for (doc in documents) {
+          itemList.add(doc.toObject(FirestoreEpisode::class.java))
+        }
+        firestoreWatchedEpisodeCallback.onCallback(itemList)
+      }
+      .addOnFailureListener {exception ->
+        Log.w(TAG, "Error getting documents: ", exception)
+      }
+  }
+
+  fun TVShowSeasonWatched (userID: FirebaseUser, tvShow: TVShowTMDB, seasonsTMDB: SeasonsTMDB, firestoreWatchedEpisodeCallback: FirestoreWatchedEpisodeCallback) {
+    val itemList =  mutableListOf<FirestoreEpisode>()
+    val docRef = db.collection("movies").document(userID.uid).collection("tvshow_episodes")
+      .whereEqualTo("id_tvshow", tvShow.id)
+      .whereEqualTo("id_season", seasonsTMDB.id)
+    docRef.get()
+      .addOnSuccessListener { documents ->
+        for (doc in documents) {
+          itemList.add(doc.toObject(FirestoreEpisode::class.java))
+        }
+        firestoreWatchedEpisodeCallback.onCallback(itemList)
+      }
+      .addOnFailureListener {exception ->
+        Log.w(TAG, "Error getting documents: ", exception)
+      }
+  }
+
+  fun getTVShowEpisodeWatched (
     userID: FirebaseUser,
-    tvShow: TVShowTMDB,
-    seasonsTMDB: SeasonsTMDB,
-    episode: EpisodeTMDB?,
+    episode: EpisodeTMDB,
     firestoreWatchedEpisodeCallback: FirestoreWatchedEpisodeCallback
   ) {
     val itemList =  mutableListOf<FirestoreEpisode>()
-    if (episode != null) {
-      val docRef = db.collection("movies").document(userID.uid)
-        .collection("tvshow_episodes").document(
-        episode.id.toString())
-      docRef.get()
-        .addOnSuccessListener { document ->
-          itemList.add(document.toObject(FirestoreEpisode::class.java)!!)
-          firestoreWatchedEpisodeCallback.onCallback(itemList)
-        }
-        .addOnFailureListener {exception ->
-          Log.w(TAG, "Error getting documents: ", exception)
-        }
-    } else {
-      val docRef = db.collection("movies").document(userID.uid).collection("tvshow_episodes")
-        .whereEqualTo("id_tvshow", tvShow.id)
-        .whereEqualTo("id_season", seasonsTMDB.id)
-      docRef.get()
-        .addOnSuccessListener { documents ->
-          for (doc in documents) {
-            itemList.add(doc.toObject(FirestoreEpisode::class.java))
-          }
-          firestoreWatchedEpisodeCallback.onCallback(itemList)
-        }
-        .addOnFailureListener {exception ->
-          Log.w(TAG, "Error getting documents: ", exception)
-        }
-    }
+    db.collection("movies").document(userID.uid)
+      .collection("tvshow_episodes").document(
+      episode.id.toString())
+      .get()
+      .addOnSuccessListener { document ->
+        itemList.add(document.toObject(FirestoreEpisode::class.java)!!)
+        firestoreWatchedEpisodeCallback.onCallback(itemList)
+      }
+      .addOnFailureListener {exception ->
+        Log.w(TAG, "Error getting documents: ", exception)
+      }
   }
 
   /**
@@ -173,6 +192,14 @@ open class FirestoreUtils {
 
   fun removeMovieFromWatched(userID: FirebaseUser, movie: MovieTMDB) {
     db.collection("movies").document(userID.uid).collection("watched").document(movie.id.toString())
+      .delete()
+      .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+      .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+  }
+
+  fun removeTVShowEpisodeFromWatched (userID: FirebaseUser,episode: EpisodeTMDB) {
+    db.collection("movies").document(userID.uid)
+      .collection("tvshow_episodes").document(episode.id.toString())
       .delete()
       .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
       .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }

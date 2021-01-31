@@ -56,6 +56,7 @@ class TVShowActivity : AppCompatActivity() {
   lateinit var swipeEpisodedController : SwipeEpisodeController
   lateinit var tvShow : TVShowTMDB
   lateinit var activeSeason : SeasonsTMDB
+  private var watchedEpisodes = listOf<FirestoreEpisode>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -72,9 +73,18 @@ class TVShowActivity : AppCompatActivity() {
       onError = ::onError
     )
 
+    initWatchedEpisodes(tvShow)
     initCastTVShowView(tvShow)
     initSimilarTVShowView(tvShow)
     setTabListener()
+  }
+
+  private fun initWatchedEpisodes(tvShow: TVShowTMDB) {
+    FirestoreUtils().getTVShowWatched(LoginActivity.getUser(),tvShow,object : FirestoreUtils.FirestoreWatchedEpisodeCallback {
+      override fun onCallback(list: MutableList<FirestoreEpisode>) {
+        watchedEpisodes = list
+      }
+    })
   }
 
   private fun initSimilarTVShowView(tvShow: TVShowTMDB) {
@@ -154,13 +164,7 @@ class TVShowActivity : AppCompatActivity() {
       initEpisodesRecyclerView()
 
       toggleButton.setOnClickListener {
-
-        FirestoreUtils().getTVShowEpisodesWatched(LoginActivity.getUser(), tvShow, season, null, object : FirestoreUtils.FirestoreWatchedEpisodeCallback {
-          override fun onCallback(list: MutableList<FirestoreEpisode>) {
-            episodesAdapter.watchedEpisodes(list)
-          }
-        })
-
+        episodesAdapter.watchedEpisodes(watchedEpisodes.filter { it.id_season == season.id } as MutableList<FirestoreEpisode>)
         MoviesRepository.getTVSeasons(
           tv_id,
           seasonNumber,
@@ -179,10 +183,15 @@ class TVShowActivity : AppCompatActivity() {
 
   fun onSelectedItem (pos : Int) {
     val episode = episodesAdapter.listOfEpisodes[pos]
-    FirestoreUtils().addTVShowEpisodetoWatched(LoginActivity.getUser(),tvShow, activeSeason, episode)
+    // already seen
+    if (watchedEpisodes.filter { it.id_episode == episode.id}.isNotEmpty()) {
+      FirestoreUtils().removeTVShowEpisodeFromWatched(LoginActivity.getUser(), episode)
+    } else { // not seen
+      FirestoreUtils().addTVShowEpisodeToWatched(LoginActivity.getUser(), tvShow, activeSeason, episode)
+      episodesAdapter.addEpisode(pos, FirestoreEpisode().episodeToFirestoreEpisode(tvShow, activeSeason, episode))
+    }
   }
 
-  // TODO forse devo cambiare qui la prima riga
   private fun initEpisodesRecyclerView() {
     recycler_item_detail_episodes.layoutManager = GridLayoutManager(window.context,1, GridLayoutManager.VERTICAL, false)
     episodesAdapter = EpisodesAdapter(window.context, layoutInflater)

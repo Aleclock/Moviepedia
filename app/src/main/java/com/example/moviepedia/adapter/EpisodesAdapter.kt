@@ -1,6 +1,7 @@
 package com.example.moviepedia.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,17 +15,15 @@ class EpisodesAdapter (val context: Context, private val layoutInflater: LayoutI
   private val TAG = "EpisodesAdapter"
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-    return EpisodeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.episode_item,parent, false))
+    return EpisodeViewHolder(
+      LayoutInflater.from(parent.context).inflate(R.layout.episode_item, parent, false)
+    )
   }
-
-  /*override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder as EpisodeViewHolder).bindView(listOfEpisodes[position])
-  }*/
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     (holder as EpisodeViewHolder).bindView(listOfEpisodes[position])
     if (position < listOfWatched.size) {
-      if (listOfEpisodes[position].id == listOfWatched[position].id_episode) {
+      if (listOfEpisodes[position].id == listOfWatched[position]!!.id_episode) {
         holder.SetAsWatched(context)
       }
     }
@@ -41,6 +40,11 @@ class EpisodesAdapter (val context: Context, private val layoutInflater: LayoutI
 
   fun watchedEpisodes(list: MutableList<FirestoreEpisode>) {
     listOfWatched = list
+    notifyDataSetChanged()
+  }
+
+  fun addEpisode(pos: Int, episode: FirestoreEpisode) {
+    listOfWatched.toMutableList().add(pos, episode)
     notifyDataSetChanged()
   }
 }
