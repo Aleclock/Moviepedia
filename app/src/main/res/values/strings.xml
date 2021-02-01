@@ -52,4 +52,7 @@
     <string name="in_production">In production</string>
     <string name="episodes">Episodes</string>
     <string name="related_tvshow">Related TV show</string>
+    <string name="new_list">Create new list</string>
+    <string name="create">Create</string>
+    <string name="list_name">List name</string>
 </resources>

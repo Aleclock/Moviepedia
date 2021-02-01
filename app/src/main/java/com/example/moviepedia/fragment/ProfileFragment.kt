@@ -16,7 +16,10 @@ import com.example.moviepedia.activity.SettingsActivity
 import com.example.moviepedia.activity.StatsActivity
 import com.example.moviepedia.adapter.DiaryItemGridAdapter
 import com.example.moviepedia.adapter.FirestoreItemGridAdapter
+import com.example.moviepedia.adapter.ListItemGridAdapter
 import com.example.moviepedia.db.FirestoreUtils
+import com.example.moviepedia.dialog.ListBottomSheet
+import com.example.moviepedia.model.FirestoreList
 import com.example.moviepedia.model.WatchedItem
 import com.example.moviepedia.model.WatchlistItem
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -87,7 +90,7 @@ class ProfileFragment : Fragment() {
                     initDiaryView()
                 }
                 R.id.toggle_profile_btn_list -> {
-                    Log.d(TAG, "Lists")
+                    initListView()
                 }
             }
         }
@@ -112,7 +115,7 @@ class ProfileFragment : Fragment() {
         recycler_profile.adapter = itemAdapter
 
         FirestoreUtils().getWatchedItems(object : FirestoreUtils.FirestoreWatchedItemsCallback {
-            override fun onCallabck(list: MutableList<WatchedItem>) {
+            override fun onCallback(list: MutableList<WatchedItem>) {
                 val items = list.map {it.item!!}
                 itemAdapter.updateItems(items)
             }
@@ -127,12 +130,28 @@ class ProfileFragment : Fragment() {
         recycler_profile.adapter = itemAdapter
 
         FirestoreUtils().getDiaryItems(object : FirestoreUtils.FirestoreWatchedItemsCallback {
-            override fun onCallabck(list: MutableList<WatchedItem>) {
+            override fun onCallback(list: MutableList<WatchedItem>) {
                 //val items = list.map {it.item!!}
                 itemAdapter.updateItems(list)
+            }
+        })
+    }
+
+    private fun initListView() {
+        btn_profile_add_list.setOnClickListener {
+            ListBottomSheet().createDialog(context!!, layoutInflater)
+        }
+
+        recycler_profile.layoutManager = GridLayoutManager(context, 3)
+        val itemAdapter = context?.let { ListItemGridAdapter(it, layoutInflater) }!!
+        recycler_profile.adapter = itemAdapter
+
+        FirestoreUtils().getUserList(LoginActivity.getUser(), object : FirestoreUtils.FirestoreListCallback {
+            override fun onCallback(list: MutableList<FirestoreList>) {
                 for (item in list) {
-                    Log.d(TAG, item.watchedDate.toString() + " , " + item.item!!.title)
+                    Log.d(TAG, item.list_name)
                 }
+                itemAdapter.updateItems(list)
             }
         })
     }

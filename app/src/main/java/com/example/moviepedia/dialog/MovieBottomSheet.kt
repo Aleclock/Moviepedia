@@ -41,7 +41,7 @@ open class MovieBottomSheet {
     }
 
     mBottomSheetDialog.findViewById<TextView>(R.id.tw_add_to_list)!!.setOnClickListener {
-      // TODO
+      // TODO aggiungere a lista
     }
 
     mBottomSheetDialog.findViewById<TextView>(R.id.tw_go_to_film)!!.setOnClickListener {

@@ -35,6 +35,8 @@ import kotlin.collections.HashMap
  *  - getTVShowWatched: given user and tvshow, return all episode of tvshow already watched
  *  - TVShowSeasonWatched: given user, tvshow and season, return all tvshow episode watched of a specific season
  *  - getTVShowEpisodeWatched: given user and specific episode, return specific episode from db
+ *  - createEmptyList: given user and list name (string), create an empty list
+ *  - getUserList: given user, return all list created by user
  */
 
 open class FirestoreUtils {
@@ -223,7 +225,7 @@ open class FirestoreUtils {
       }
       "movie" -> {
           getWatchedItems(object : FirestoreWatchedItemsCallback {
-              override fun onCallabck(list: MutableList<WatchedItem>) {
+              override fun onCallback(list: MutableList<WatchedItem>) {
                   docRef.update(key, list.size)
               }
           })
@@ -289,7 +291,7 @@ open class FirestoreUtils {
         for (doc in documents) {
           itemList.add(doc.toObject(WatchedItem::class.java))
         }
-        firestoreWatchedItemsCallback.onCallabck(itemList)
+        firestoreWatchedItemsCallback.onCallback(itemList)
       }
       .addOnFailureListener { exception ->
         Log.w(TAG, "Error getting documents: ", exception)
@@ -307,7 +309,7 @@ open class FirestoreUtils {
         for (doc in documents) {
           itemList.add(doc.toObject(WatchedItem::class.java))
         }
-        firestoreWatchedItemsCallback.onCallabck(itemList)
+        firestoreWatchedItemsCallback.onCallback(itemList)
       }
       .addOnFailureListener {exception ->
         Log.w(TAG, "Error getting documents: ", exception)
@@ -385,6 +387,30 @@ open class FirestoreUtils {
       }
   }
 
+  fun createEmptyList (userID: FirebaseUser, name: String) {
+    val list = FirestoreList().createList(userID.uid, name)
+    db.collection("list")
+      .add(list)
+      .addOnSuccessListener { documentReference -> Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}") }
+      .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+  }
+
+  fun getUserList(userID: FirebaseUser, firestoreListCallback: FirestoreListCallback) {
+    val docRef = db.collection("list")
+      .whereEqualTo("user_id", userID.uid)
+    docRef.get()
+      .addOnSuccessListener { documents ->
+        val itemList =  mutableListOf<FirestoreList>()
+        for (doc in documents) {
+          itemList.add(doc.toObject(FirestoreList::class.java))
+        }
+        firestoreListCallback.onCallback(itemList)
+      }
+      .addOnFailureListener {exception ->
+        Log.w(TAG, "Error getting documents: ", exception)
+      }
+  }
+
 
   /**
    * INTERFACE FOR CALLBACKS
@@ -407,7 +433,11 @@ open class FirestoreUtils {
   }
 
   interface FirestoreWatchedItemsCallback {
-    fun onCallabck (@Query("list") list: MutableList<WatchedItem>)
+    fun onCallback (@Query("list") list: MutableList<WatchedItem>)
+  }
+
+  interface FirestoreListCallback {
+    fun onCallback (@Query("list") list: MutableList<FirestoreList>)
   }
 
   interface FirestoreItemsCallback {

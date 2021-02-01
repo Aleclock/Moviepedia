@@ -181,6 +181,7 @@ class TVShowActivity : AppCompatActivity() {
     }
   }
 
+  // TODO se il numero di episodi guardati è uguale al numero totale di episodi -> aggiungere tvshow in watched
   fun onSelectedItem (pos : Int) {
     val episode = episodesAdapter.listOfEpisodes[pos]
     // already seen
